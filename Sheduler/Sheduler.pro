@@ -3,13 +3,15 @@ SOURCES += \
     src/regularevent.cpp \
     src/irregularevent.cpp \
     src/event.cpp \
-    src/day.cpp
+    src/day.cpp \
+    gui/daywidget.cpp
 
 HEADERS += \
     src/regularevent.hpp \
     src/irregularevent.hpp \
     src/event.hpp \
-    src/day.hpp
+    src/day.hpp \
+    gui/daywidget.hpp
 
 INCLUDEPATH += DEPENDPATH
 
