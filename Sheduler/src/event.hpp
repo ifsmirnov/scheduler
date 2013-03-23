@@ -25,6 +25,9 @@ public:
     virtual void setEnd(const QTime& time) = 0;
     virtual void setDuration(int value) = 0;
     virtual void setInfo(const QString& value) = 0;
+
+    virtual bool isRegular() const = 0;
 };
+bool operator <(const Event& lhs, const Event& rhs);
 
 #endif // EVENT_HPP

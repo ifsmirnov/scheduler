@@ -70,3 +70,7 @@ void IrregularEvent::setDuration(int value) {
 void IrregularEvent::setInfo(const QString &value) {
     info_ = value;
 }
+
+bool IrregularEvent::isRegular() const {
+    return false;
+}
