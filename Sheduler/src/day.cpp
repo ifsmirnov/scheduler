@@ -4,7 +4,7 @@
 #include <QDate>
 
 Day::Day() {
-    setDate(Date());
+    setDate(QDate());
 }
 Day::Day(QDate date) {
     setDate(date);
