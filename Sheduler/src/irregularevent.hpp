@@ -26,6 +26,8 @@ public:
     virtual void setDuration(int value);
     virtual void setInfo(const QString& value);
 
+    virtual bool isRegular() const;
+
 private:
     QTime begin_, end_;
     QString info_;

@@ -70,3 +70,7 @@ void RegularEvent::setDuration(int value) {
 void RegularEvent::setInfo(const QString &value) {
     info_ = value;
 }
+
+bool RegularEvent::isRegular() const {
+    return true;
+}
