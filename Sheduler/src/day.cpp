@@ -4,7 +4,7 @@
 #include <QDate>
 
 Day::Day() {
-    setDate(date());
+    setDate(Date());
 }
 Day::Day(QDate date) {
     setDate(date);
@@ -21,7 +21,7 @@ QVector<RegularEvent*> Day::regularEvents() {
     for (auto i: events_) {
         if (i->isRegular()) {
             RegularEvent* t = dynamic_cast<RegularEvent*>(i);
-            if (t != nullptr)
+            if (t)
                 res.push_back(t);
         }
     }
