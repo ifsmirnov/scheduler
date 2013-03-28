@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QVector>
+#include <QLabel>
+#include <QColor>
 
 #include "src/day.hpp"
 #include "src/event.hpp"
@@ -30,12 +32,13 @@ public slots:
     QSize sizeHint() const;
 
 private:
+    QVector<QLabel*> hourLabels;
     Day *const day_; // pointer is constant, the value is not
 
     /* I don't know if we may want to change the pointed value
      * while it is displayed. If we want, the signal-slot
      * mapping should be implemented, Day should be Q_OBJECT
-     * etc. I haven't decided if we want it yet.
+     * etc. I haven't decided if we want it yet. */
 };
 
 #endif // DAYWIDGET_HPP
