@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
     day->addEvent(new IrregularEvent(QTime(0, 0), 8*60*60));
     day->addEvent(new IrregularEvent(QTime(23, 0), 59*60));
 
-    DayWidget *widget = new DayWidget(day);
-    widget->show();
+    DayWidget *dayWidget = new DayWidget(day);
+    dayWidget->show();
 
     return app.exec();
 }
