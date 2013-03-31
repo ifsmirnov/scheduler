@@ -29,9 +29,16 @@ public:
     void addEvent(Event* event);
     // or const Event* ? -- IS
 
+public:
+    static const Day* defaultDay();
+    static const Day* const defaultDay_;
+
 private:
     QDate date_;
     QVector<Event*> events_;
 };
+
+bool operator <(const Day& lhs, const Day& rhs);
+bool compareDayPointers(const Day* lhs, const Day* rhs);
 
 #endif // DAY_HPP

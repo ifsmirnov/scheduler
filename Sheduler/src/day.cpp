@@ -39,9 +39,21 @@ QVector<IrregularEvent*> Day::irregularEvents() {
     return res;
 }
 
+const Day* Day::defaultDay() {
+    return defaultDay_;
+}
+const Day* const Day::defaultDay_ = new Day;
+
 void Day::setDate(const QDate &date) {
     date_ = date;
 }
 void Day::addEvent(Event *event) {
     events_.push_back(event);
+}
+
+bool operator <(const Day& lhs, const Day& rhs) {
+    return lhs.date() < rhs.date();
+}
+bool compareDayPointers(const Day* lhs, const Day* rhs) {
+    return lhs->date() < rhs->date();
 }

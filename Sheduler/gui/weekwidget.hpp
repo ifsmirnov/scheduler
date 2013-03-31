@@ -2,6 +2,7 @@
 #define WEEKWIDGET_HPP
 
 #include <QWidget>
+#include "daywidget.hpp"
 
 class WeekWidget : public QWidget
 {

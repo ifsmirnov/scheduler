@@ -5,7 +5,8 @@ SOURCES += \
     src/event.cpp \
     src/day.cpp \
     gui/daywidget.cpp \
-    gui/weekwidget.cpp
+    gui/weekwidget.cpp \
+    src/calendar.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -13,7 +14,8 @@ HEADERS += \
     src/event.hpp \
     src/day.hpp \
     gui/daywidget.hpp \
-    gui/weekwidget.hpp
+    gui/weekwidget.hpp \
+    src/calendar.hpp
 
 INCLUDEPATH += DEPENDPATH
 
