@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QPalette>
 
 #include <iostream>
 #include <stdexcept>
@@ -11,6 +12,10 @@
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
+    QPalette pal = app.palette();
+
+    pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
+    app.setPalette(pal);
 
     Day *day = new Day();
     day->addEvent(new RegularEvent(QTime(10, 0), 10000));
