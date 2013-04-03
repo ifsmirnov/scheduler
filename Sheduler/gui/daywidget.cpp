@@ -67,6 +67,7 @@ DayWidget::DayWidget(Day* day, QWidget *parent) :
     exitButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     addEventButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+    connect(addEventButton, SIGNAL(clicked()), this, SLOT(addEvent()));
     connect(exitButton, SIGNAL(clicked()), this, SLOT(close()));
 
     //timeLine
@@ -79,13 +80,11 @@ DayWidget::DayWidget(Day* day, QWidget *parent) :
 
     for (int hour = 0; hour < 24; hour++) {
         hoursLabelsLayout->addWidget(new QLabel(QTime(hour, 0).toString("hh:mm")), 1);
-
     }
     setLayout(dayWidgetLayout);
 }
 
 void DayWidget::paintEvent(QPaintEvent *) {
-
 }
 
 Day* DayWidget::day() {
@@ -96,4 +95,10 @@ QSize DayWidget::sizeHint() const {
     return QSize(240, 600);
 }
 
+void DayWidget::addEvent() {
+    Event* event = new IrregularEvent();
+    AddEventDialog* eventDialog = new AddEventDialog(event, this);
+    eventDialog->show();
+    day_->addEvent(event);
+}
 

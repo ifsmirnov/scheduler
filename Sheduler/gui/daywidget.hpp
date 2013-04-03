@@ -10,6 +10,7 @@
 
 #include "src/day.hpp"
 #include "src/event.hpp"
+#include "gui/addeventdialog.hpp"
 
 
 /**
@@ -67,6 +68,9 @@ private:
      * mapping should be implemented, Day should be Q_OBJECT
      * etc. I haven't decided if we want it yet. */
     DayScheduleWidget* DayScheduleWidget_;
+
+private slots:
+    void addEvent();
 };
 
 
