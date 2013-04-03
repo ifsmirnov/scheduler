@@ -5,7 +5,13 @@ SOURCES += \
     src/event.cpp \
     src/day.cpp \
     gui/daywidget.cpp \
-    gui/weekwidget.cpp
+    gui/weekwidget.cpp \
+    src/dailyschedule.cpp \
+    src/calendar/calendar.cpp \
+    src/calendar/yearcontainer.cpp \
+    src/calendar/monthcontainer.cpp \
+    src/calendar/container.cpp \
+    src/calendar/globalcontainer.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -13,7 +19,13 @@ HEADERS += \
     src/event.hpp \
     src/day.hpp \
     gui/daywidget.hpp \
-    gui/weekwidget.hpp
+    gui/weekwidget.hpp \
+    src/dailyschedule.hpp \
+    src/calendar/calendar.hpp \
+    src/calendar/yearcontainer.hpp \
+    src/calendar/monthcontainer.hpp \
+    src/calendar/container.hpp \
+    src/calendar/globalcontainer.hpp
 
 INCLUDEPATH += DEPENDPATH
 

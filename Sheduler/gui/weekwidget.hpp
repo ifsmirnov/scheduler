@@ -1,4 +1,4 @@
-#ifndef WEEKWIDGET_HPP
+/*#ifndef WEEKWIDGET_HPP
 #define WEEKWIDGET_HPP
 
 #include <QWidget>
@@ -22,3 +22,4 @@ public slots:
 };
 
 #endif // WEEKWIDGET_HPP
+*/
