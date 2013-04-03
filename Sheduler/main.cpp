@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QPalette>
 
 #include <iostream>
 #include <stdexcept>
@@ -9,10 +10,16 @@
 #include <src/regularevent.hpp>
 #include <src/irregularevent.hpp>
 #include <src/calendar/calendar.hpp>
+#include <src/day.hpp>
+#include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
+    QPalette pal = app.palette();
+
+    pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
+    app.setPalette(pal);
 
     Calendar calendar;
     QDate begin(2001, 03, 14);

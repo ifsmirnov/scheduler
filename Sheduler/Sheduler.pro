@@ -11,7 +11,8 @@ SOURCES += \
     src/calendar/yearcontainer.cpp \
     src/calendar/monthcontainer.cpp \
     src/calendar/container.cpp \
-    src/calendar/globalcontainer.cpp
+    src/calendar/globalcontainer.cpp \
+    gui/addeventdialog.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -25,7 +26,8 @@ HEADERS += \
     src/calendar/yearcontainer.hpp \
     src/calendar/monthcontainer.hpp \
     src/calendar/container.hpp \
-    src/calendar/globalcontainer.hpp
+    src/calendar/globalcontainer.hpp \
+    gui/addeventdialog.hpp
 
 INCLUDEPATH += DEPENDPATH
 
