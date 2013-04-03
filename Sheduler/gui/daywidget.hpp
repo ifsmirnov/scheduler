@@ -11,12 +11,21 @@
 #include "src/day.hpp"
 #include "src/event.hpp"
 
-class TimeLineWidget : public QWidget
+
+/**
+ * @brief The DayScheduleWidget class
+ *
+ * This is a subwidget of DayWidget class
+ * paints the rectangle scheme of the events during the day.
+ *
+ * @
+ */
+class DayScheduleWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TimeLineWidget(Day* day, QWidget *parent = 0);
+    explicit DayScheduleWidget(Day* day, QWidget *parent = 0);
 
 public:
     Day* day();
@@ -27,6 +36,7 @@ public slots:
 private:
     Day *const day_;
 };
+
 
 /**
  * @brief The DayWidget class
@@ -56,7 +66,7 @@ private:
      * while it is displayed. If we want, the signal-slot
      * mapping should be implemented, Day should be Q_OBJECT
      * etc. I haven't decided if we want it yet. */
-    TimeLineWidget* timeLineWidget_;
+    DayScheduleWidget* DayScheduleWidget_;
 };
 
 
