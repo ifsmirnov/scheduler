@@ -1,4 +1,4 @@
-#include "daywidget.hpp"
+/*#include "daywidget.hpp"
 #include "weekwidget.hpp"
 
 WeekWidget::WeekWidget(std::vector<DayWidget*> dayWidgets, QWidget *parent) :
@@ -14,3 +14,4 @@ void WeekWidget::paintEvent(QPaintEvent *)
 {
 
 }
+*/
