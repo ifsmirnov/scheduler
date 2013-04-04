@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QDate>
 #include <QVector>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include "container.hpp"
 #include "src/dailyschedule.hpp"
@@ -22,6 +24,9 @@ public:
 public slots:
     void setSchedule(QDate date, DailyScheduleSPtr schedule);
     QVector<DailyScheduleSPtr> getDaysInRange(QDate begin, QDate end);
+
+public:
+    QDomElement serialize(QDomDocument &document) const;
     
 private:
     Container *container;

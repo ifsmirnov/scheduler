@@ -3,6 +3,8 @@
 
 #include <QTime>
 #include <QString>
+#include <QDomElement>
+#include <QDomDocument>
 
 /**
  * @brief The Event class
@@ -29,6 +31,8 @@ public:
     virtual bool isRegular() const = 0;
 
     virtual Event *clone() const = 0;
+
+    virtual QDomElement serialize(QDomDocument &document) const = 0;
 
 public:
     static int count;

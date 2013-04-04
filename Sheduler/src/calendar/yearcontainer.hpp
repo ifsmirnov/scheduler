@@ -21,6 +21,8 @@ public:
                         QVector<DailyScheduleSPtr> &result);
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule);
 
+    virtual QDomElement serialize(QDomDocument &document) const;
+
 private:
     QVector<MonthContainer> entries;
 };

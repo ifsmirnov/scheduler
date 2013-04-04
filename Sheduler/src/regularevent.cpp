@@ -82,3 +82,15 @@ Event *RegularEvent::clone() const
 {
     return new RegularEvent(begin(), end(), info());
 }
+
+QDomElement RegularEvent::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("event");
+
+    element.setAttribute("begin", begin().toString("hh:mm:ss"));
+    element.setAttribute("end", end().toString("hh:mm:ss"));
+    element.setAttribute("info", info());
+    element.setAttribute("regular", "true");
+
+    return element;
+}

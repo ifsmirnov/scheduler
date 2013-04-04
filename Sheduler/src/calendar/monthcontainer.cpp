@@ -28,4 +28,21 @@ void MonthContainer::setSchedule(QDate date, DailyScheduleSPtr schedule)
     entries[date.day() - 1] = schedule;
 }
 
+QDomElement MonthContainer::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("container");
+
+    element.setAttribute("type", "month");
+
+    for (int i = 0; i < 31; i++) {
+        if (entries[i] != nullptr) {
+            QDomElement child = entries[i]->serialize(document);
+            child.setAttribute("day", i + 1);
+            element.appendChild(child);
+        }
+    }
+
+    return element;
+}
+
 } // calendar_containers

@@ -54,4 +54,15 @@ void DailySchedule::addEvent(Event *event)
     events_.push_back(event);
 }
 
+QDomElement DailySchedule::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("schedule");
+
+    for (auto event: events_) {
+        element.appendChild(event->serialize(document));
+    }
+
+    return element;
+}
+
 int DailySchedule::count = 0;
