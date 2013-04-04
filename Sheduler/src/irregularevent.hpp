@@ -13,7 +13,7 @@ public:
     IrregularEvent();
     IrregularEvent(QTime begin, int duration, QString info = "");
     IrregularEvent(QTime begin, QTime end, QString info = "");
-    ~IrregularEvent() { }
+    ~IrregularEvent();
 
 public:
     virtual QTime begin() const;
@@ -27,6 +27,8 @@ public:
     virtual void setInfo(const QString& value);
 
     virtual bool isRegular() const;
+
+    virtual Event *clone() const;
 
 private:
     QTime begin_, end_;

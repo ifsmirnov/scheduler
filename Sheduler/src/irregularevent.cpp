@@ -12,6 +12,10 @@ IrregularEvent::IrregularEvent()
     info_ = "";
 }
 
+IrregularEvent::~IrregularEvent()
+{
+}
+
 IrregularEvent::IrregularEvent(QTime begin, int duration, QString info)
 {
     try {
@@ -73,4 +77,9 @@ void IrregularEvent::setInfo(const QString &value) {
 
 bool IrregularEvent::isRegular() const {
     return false;
+}
+
+Event *IrregularEvent::clone() const
+{
+    return new IrregularEvent(begin(), end(), info());
 }

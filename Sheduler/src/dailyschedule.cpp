@@ -1,11 +1,18 @@
 #include "dailyschedule.hpp"
 
+#include <iostream>
+
 DailySchedule::DailySchedule()
 {
+    ++count;
 }
 
 DailySchedule::~DailySchedule()
 {
+    --count;
+    for (auto event: events_) {
+        delete event;
+    }
 }
 
 QVector<Event*> DailySchedule::events()
@@ -33,7 +40,18 @@ QVector<IrregularEvent*> DailySchedule::irregularEvents()
     return result;
 }
 
+DailyScheduleSPtr DailySchedule::clone()
+{
+    DailySchedule *newSchedule = new DailySchedule;
+    for (auto event: events_) {
+        newSchedule->addEvent(event->clone());
+    }
+    return DailyScheduleSPtr(newSchedule);
+}
+
 void DailySchedule::addEvent(Event *event)
 {
     events_.push_back(event);
 }
+
+int DailySchedule::count = 0;

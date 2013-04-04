@@ -11,6 +11,9 @@ RegularEvent::RegularEvent()
     begin_ = end_ = QTime();
     info_ = "";
 }
+RegularEvent::~RegularEvent()
+{
+}
 
 RegularEvent::RegularEvent(QTime begin, int duration, QString info)
 {
@@ -73,4 +76,9 @@ void RegularEvent::setInfo(const QString &value) {
 
 bool RegularEvent::isRegular() const {
     return true;
+}
+
+Event *RegularEvent::clone() const
+{
+    return new RegularEvent(begin(), end(), info());
 }

@@ -20,13 +20,17 @@ public:
     QVector<RegularEvent*> regularEvents();
     QVector<IrregularEvent*> irregularEvents();
 
+    std::shared_ptr<DailySchedule> clone();
+
     // think over if this getters should be constant -- IS
 
     void addEvent(Event* event);
 
+public:
+    static int count;
+
 private:
     QVector<Event*> events_;
-
 };
 
 typedef std::shared_ptr<DailySchedule> DailyScheduleSPtr;

@@ -2,6 +2,8 @@
 
 #include "globalcontainer.hpp"
 
+#include <iostream>
+
 using calendar_containers::GlobalContainer;
 
 Calendar::Calendar(QObject *parent) :

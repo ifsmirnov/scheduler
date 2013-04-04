@@ -12,8 +12,8 @@
 class Event
 {
 public:
-    Event();
-    virtual ~Event() { }
+    Event() { ++count; }
+    virtual ~Event() { --count; }
 
 public:
     virtual QTime begin() const = 0;
@@ -27,6 +27,11 @@ public:
     virtual void setInfo(const QString& value) = 0;
 
     virtual bool isRegular() const = 0;
+
+    virtual Event *clone() const = 0;
+
+public:
+    static int count;
 };
 bool operator <(const Event& lhs, const Event& rhs);
 

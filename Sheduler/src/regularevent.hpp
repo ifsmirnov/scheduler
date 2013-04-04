@@ -14,7 +14,7 @@ public:
     RegularEvent();
     RegularEvent(QTime begin, int duration, QString info = "");
     RegularEvent(QTime begin, QTime end, QString info = "");
-    virtual ~RegularEvent() { }
+    virtual ~RegularEvent();
 
 public:
     virtual QTime begin() const;
@@ -28,6 +28,8 @@ public:
     virtual void setInfo(const QString& value);
 
     virtual bool isRegular() const;
+
+    virtual Event *clone() const;
 
 private:
     QTime begin_, end_;

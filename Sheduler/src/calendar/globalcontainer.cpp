@@ -8,6 +8,9 @@ GlobalContainer::GlobalContainer()
 
 GlobalContainer::~GlobalContainer()
 {
+    for (auto i: years) {
+        delete i.second;
+    }
 }
 
 void GlobalContainer::getDaysInRange(QDate begin,
@@ -27,16 +30,19 @@ void GlobalContainer::getDaysInRange(QDate begin,
             childEnd.setDate(childEnd.year(), end.month(), end.day());
         }
 
-        std::map<int, YearContainer>::iterator it = years.find(year);
+        std::map<int, YearContainer*>::iterator it = years.find(year);
         if (it != years.end()) {
-            it->second.getDaysInRange(childBegin, childEnd, result);
+            it->second->getDaysInRange(childBegin, childEnd, result);
         }
     }
 }
 
 void GlobalContainer::setSchedule(QDate date, DailyScheduleSPtr schedule)
 {
-    years[date.year()].setSchedule(date, schedule);
+    if (years.find(date.year()) == years.end()) {
+        years[date.year()] = new YearContainer;
+    }
+    years[date.year()]->setSchedule(date, schedule);
 }
 
 } // calendar_containers

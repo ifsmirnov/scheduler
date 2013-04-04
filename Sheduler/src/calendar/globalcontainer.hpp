@@ -24,7 +24,7 @@ public:
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule);
 
 private:
-    std::map<int, YearContainer> years;
+    std::map<int, YearContainer*> years;
 
 };
 
