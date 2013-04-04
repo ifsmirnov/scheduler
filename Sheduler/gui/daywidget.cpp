@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-DayScheduleWidget::DayScheduleWidget(Day *day, QWidget *parent) :
+DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr day, QWidget *parent) :
     QWidget(parent), day_(day) {
 }
 
@@ -27,24 +27,25 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
     for (auto event: events) {
         int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
         int len = (double)event->duration() / coeff * height();
-        //std::cout << event->duration() << ' ' << QTime(0, 0).secsTo(event->begin()) << ' ' << begin << ' ' << len << std::endl;
+        //std::cout << height() << ' ' << len << std::endl;
         QRect eventRect(rect().left(), begin, rect().width()-1, len);
         if (event->isRegular()) {
-            painter.setBrush(QColor(Qt::red).lighter(125));
+            painter.setBrush(QColor(Qt::blue).lighter(150));
         } else {
-            painter.setBrush(QColor(Qt::blue).lighter(125));
+            painter.setBrush(QColor(Qt::red).lighter(150));
         }
+        //std::cerr << event->duration() << std::endl;
         painter.drawRect(eventRect);
     }
 }
 
-Day* DayScheduleWidget::day() {
+DailyScheduleSPtr DayScheduleWidget::day() {
     return day_;
 }
 
 
 
-DayWidget::DayWidget(Day* day, QWidget *parent) :
+DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
     QWidget(parent), day_(day)
 {
     //entire window
@@ -87,7 +88,7 @@ DayWidget::DayWidget(Day* day, QWidget *parent) :
 void DayWidget::paintEvent(QPaintEvent *) {
 }
 
-Day* DayWidget::day() {
+DailyScheduleSPtr DayWidget::day() {
     return day_;
 }
 
@@ -96,9 +97,7 @@ QSize DayWidget::sizeHint() const {
 }
 
 void DayWidget::addEvent() {
-    Event* event = new IrregularEvent();
-    AddEventDialog* eventDialog = new AddEventDialog(event, this);
+    AddEventDialog* eventDialog = new AddEventDialog(day_, this);
     eventDialog->show();
-    day_->addEvent(event);
 }
 
