@@ -1,25 +1,34 @@
-/*#ifndef WEEKWIDGET_HPP
+#ifndef WEEKWIDGET_HPP
 #define WEEKWIDGET_HPP
 
+#include <QObject>
 #include <QWidget>
+#include <QLabel>
+#include <QDate>
+#include <QGridLayout>
+#include <src/dailyschedule.hpp>
+#include <gui/daywidget.hpp>
 
 class WeekWidget : public QWidget
 {
     Q_OBJECT
 
 private:
-    std::vector<DayWidget*> dayWidgets;
+    QVector<DailyScheduleSPtr> dailySchedules;
+    QHBoxLayout* layout;
+    QVector<QLabel*> dateLabels;
+    QVector<DayWidget*> dayWidgets;
+    QDate firstDay;
 
 public:
-    WeekWidget(std::vector<DayWidget*> dayWidgets, QWidget *parent = 0);
+    WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules, QWidget *parent = 0);
 
 signals:
     
 public slots:
     void paintEvent(QPaintEvent *);
-//    QSize sizeHint() const;
     
 };
 
 #endif // WEEKWIDGET_HPP
-*/
+

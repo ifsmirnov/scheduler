@@ -13,6 +13,7 @@
 #include <src/day.hpp>
 #include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
+#include <gui/weekwidget.hpp>
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -41,10 +42,21 @@ int main(int argc, char* argv[]) {
 
     delete calendar;
 
-    schedule.reset();
+    //schedule.reset();
 
     std::cerr << DailySchedule::count << std::endl;
     std::cerr << Event::count << std::endl;
 
-    return 0;
+    QVector<DailyScheduleSPtr> dailySchedules;
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);
+    weekWidget->show();
+
+    return app.exec();
 }
