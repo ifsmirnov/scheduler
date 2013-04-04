@@ -31,6 +31,7 @@ public:
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule) = 0;
 
     virtual QDomElement serialize(QDomDocument &document) const = 0;
+    //virtual static Container *deserialize(QDomElement element);
 };
 
 } // calendar_containers

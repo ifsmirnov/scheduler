@@ -4,10 +4,12 @@ namespace calendar_containers {
 
 GlobalContainer::GlobalContainer()
 {
+    ++count;
 }
 
 GlobalContainer::~GlobalContainer()
 {
+    --count;
     for (auto i: years) {
         delete i.second;
     }
@@ -59,5 +61,28 @@ QDomElement GlobalContainer::serialize(QDomDocument &document) const
 
     return element;
 }
+
+GlobalContainer *GlobalContainer::deserialize(QDomElement element)
+{
+    if (element.tagName() != "container") {
+        std::cerr << "Not a container";
+    }
+    if (!element.hasAttribute("type") || element.attribute("type") != "global") {
+        std::cerr << "Not a global container";
+    }
+
+    GlobalContainer *container = new GlobalContainer;
+
+    for (QDomElement child = element.firstChildElement("container");
+         !child.isNull();
+         child = child.nextSiblingElement("container")) {
+        int year = child.attribute("year").toInt();
+        container->years[year] = YearContainer::deserialize(child);
+    }
+
+    return container;
+}
+
+int GlobalContainer::count = 0;
 
 } // calendar_containers

@@ -13,6 +13,8 @@
 #include <src/regularevent.hpp>
 #include <src/irregularevent.hpp>
 #include <src/calendar/calendar.hpp>
+#include <src/calendar/monthcontainer.hpp>
+#include <src/calendar/globalcontainer.hpp>
 #include <src/day.hpp>
 #include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
@@ -27,7 +29,7 @@ int main(int argc, char* argv[]) {
 
     Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
-    QDate end(2001, 05, 15);
+    QDate end(2002, 03, 14);
 
     DailyScheduleSPtr schedule(new DailySchedule);
 
@@ -38,22 +40,30 @@ int main(int argc, char* argv[]) {
         calendar->setSchedule(t, schedule->clone());
     }
 
-    QFile file("/tmp/file");
-    if (!file.open(QIODevice::WriteOnly)) {
-        throw;
-    }
-
     QDomDocument document;
     document.appendChild(calendar->serialize(document));
 
-    QString text = document.toString(2);
+    QFile file("/tmp/file");
+    file.open(QIODevice::WriteOnly);
+    file.write(document.toString().toAscii());
+    file.close();
 
-    file.write(text.toAscii());
+    std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
+
+    schedule.reset();
+    delete calendar;
+
+    file.open(QIODevice::ReadOnly);
+    if (!document.setContent(&file)) {
+        std::cerr << "Cannot set content" << std::endl;
+    }
+
+    calendar = Calendar::deserialize(document.firstChildElement());
 
     delete calendar;
 
-    //schedule.reset();
-
+    std::cerr << calendar_containers::MonthContainer::count << std::endl;
+    std::cerr << calendar_containers::GlobalContainer::count << std::endl;
     std::cerr << DailySchedule::count << std::endl;
     std::cerr << Event::count << std::endl;
 
