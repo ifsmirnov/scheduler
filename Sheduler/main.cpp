@@ -27,24 +27,28 @@ int main(int argc, char* argv[]) {
 
     DailyScheduleSPtr schedule(new DailySchedule);
 
-    schedule->addEvent(new RegularEvent(QTime::currentTime(), 10));
-    schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
+    schedule->addEvent(new RegularEvent(QTime::currentTime(), 1000));
+    //schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
 
     for (QDate t = begin; t <= end; t = t.addDays(1)) {
         calendar->setSchedule(t, schedule->clone());
     }
 
-    std::cerr << DailySchedule::count << std::endl;
-    std::cerr << Event::count << std::endl;
+    //std::cerr << DailySchedule::count << std::endl;
+    //std::cerr << Event::count << std::endl;
 
-    std::cerr << calendar->getDaysInRange(QDate(2001, 02, 01), QDate(2002, 03, 13)).size() << std::endl;
+    //std::cerr << calendar->getDaysInRange(QDate(2001, 02, 01), QDate(2002, 03, 13)).size() << std::endl;
 
     delete calendar;
 
-    schedule.reset();
+    //schedule.reset();
 
-    std::cerr << DailySchedule::count << std::endl;
-    std::cerr << Event::count << std::endl;
+    //std::cerr << DailySchedule::count << std::endl;
+    //std::cerr << Event::count << std::endl;
+    //std::cerr << schedule->events().size() << std::endl;
 
-    return 0;
+    DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
+    dayWidget->show();
+
+    return app.exec();
 }

@@ -7,8 +7,9 @@
 #include <QColor>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <QDate>
 
-#include "src/day.hpp"
+#include "src/dailyschedule.hpp"
 #include "src/event.hpp"
 #include "gui/addeventdialog.hpp"
 
@@ -26,16 +27,16 @@ class DayScheduleWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DayScheduleWidget(Day* day, QWidget *parent = 0);
+    explicit DayScheduleWidget(DailyScheduleSPtr day, QWidget *parent = 0);
 
 public:
-    Day* day();
+    DailyScheduleSPtr day();
 
 public slots:
     void paintEvent(QPaintEvent *);
 
 private:
-    Day *const day_;
+    DailyScheduleSPtr day_;
 };
 
 
@@ -52,17 +53,17 @@ class DayWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DayWidget(Day* day, QWidget *parent = 0);
+    explicit DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent = 0);
 
 public:
-    Day* day();
+    DailyScheduleSPtr day();
 
 public slots:
     void paintEvent(QPaintEvent *);
     QSize sizeHint() const;
 
 private:
-    Day *const day_; // pointer is constant, the value is not
+    DailyScheduleSPtr day_; // pointer is constant, the value is not
     /* I don't know if we may want to change the pointed value
      * while it is displayed. If we want, the signal-slot
      * mapping should be implemented, Day should be Q_OBJECT
