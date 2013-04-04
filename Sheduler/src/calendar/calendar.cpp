@@ -28,4 +28,13 @@ QVector<DailyScheduleSPtr> Calendar::getDaysInRange(QDate begin, QDate end)
     return result;
 }
 
+QDomElement Calendar::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("calendar");
+
+    element.appendChild(container->serialize(document));
+
+    return element;
+}
+
 

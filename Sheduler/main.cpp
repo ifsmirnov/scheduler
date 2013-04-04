@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QPalette>
+#include <QFile>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include <iostream>
 #include <stdexcept>
@@ -24,21 +27,28 @@ int main(int argc, char* argv[]) {
 
     Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
-    QDate end(2002, 06, 10);
+    QDate end(2001, 05, 15);
 
     DailyScheduleSPtr schedule(new DailySchedule);
 
-    schedule->addEvent(new RegularEvent(QTime::currentTime(), 10));
+    schedule->addEvent(new RegularEvent(QTime::currentTime(), 10, "hello world"));
     schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
 
     for (QDate t = begin; t <= end; t = t.addDays(1)) {
         calendar->setSchedule(t, schedule->clone());
     }
 
-    std::cerr << DailySchedule::count << std::endl;
-    std::cerr << Event::count << std::endl;
+    QFile file("/tmp/file");
+    if (!file.open(QIODevice::WriteOnly)) {
+        throw;
+    }
 
-    std::cerr << calendar->getDaysInRange(QDate(2001, 02, 01), QDate(2002, 03, 13)).size() << std::endl;
+    QDomDocument document;
+    document.appendChild(calendar->serialize(document));
+
+    QString text = document.toString(2);
+
+    file.write(text.toAscii());
 
     delete calendar;
 

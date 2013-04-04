@@ -37,4 +37,16 @@ void YearContainer::setSchedule(QDate date, DailyScheduleSPtr schedule)
     entries[date.month() - 1].setSchedule(date, schedule);
 }
 
+QDomElement YearContainer::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("container");
+
+    element.setAttribute("type", "year");
+    for (auto month: entries) {
+        element.appendChild(month.serialize(document));
+    }
+
+    return element;
+}
+
 } // calendar_containers

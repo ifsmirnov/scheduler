@@ -45,4 +45,19 @@ void GlobalContainer::setSchedule(QDate date, DailyScheduleSPtr schedule)
     years[date.year()]->setSchedule(date, schedule);
 }
 
+QDomElement GlobalContainer::serialize(QDomDocument &document) const
+{
+    QDomElement element = document.createElement("container");
+
+    element.setAttribute("type", "global");
+
+    for (auto i: years) {
+        QDomElement child = i.second->serialize(document);
+        child.setAttribute("year", i.first);
+        element.appendChild(child);
+    }
+
+    return element;
+}
+
 } // calendar_containers
