@@ -27,6 +27,7 @@ public slots:
 
 public:
     QDomElement serialize(QDomDocument &document) const;
+    static Calendar *deserialize(QDomElement element);
     
 private:
     Container *container;

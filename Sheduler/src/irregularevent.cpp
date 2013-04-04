@@ -91,7 +91,7 @@ QDomElement IrregularEvent::serialize(QDomDocument &document) const
     element.setAttribute("begin", begin().toString("hh:mm:ss"));
     element.setAttribute("end", end().toString("hh:mm:ss"));
     element.setAttribute("info", info());
-    element.setAttribute("regular", "true");
+    element.setAttribute("regular", "false");
 
     return element;
 }

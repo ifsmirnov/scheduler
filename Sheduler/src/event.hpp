@@ -33,6 +33,7 @@ public:
     virtual Event *clone() const = 0;
 
     virtual QDomElement serialize(QDomDocument &document) const = 0;
+    static Event *deserialize(QDomElement element);
 
 public:
     static int count;

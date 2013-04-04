@@ -29,6 +29,7 @@ public:
     void addEvent(Event* event);
 
     QDomElement serialize(QDomDocument &document) const;
+    static std::shared_ptr<DailySchedule> deserialize(QDomElement element);
 
 public:
     static int count;

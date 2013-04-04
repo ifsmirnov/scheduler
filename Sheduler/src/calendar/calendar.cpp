@@ -37,4 +37,19 @@ QDomElement Calendar::serialize(QDomDocument &document) const
     return element;
 }
 
+Calendar *Calendar::deserialize(QDomElement element)
+{
+    if (element.tagName() != "calendar") {
+        std::cerr << "Not a calendar" << std::endl;
+    }
+
+    Calendar *calendar = new Calendar;
+    delete calendar->container;
+
+    QDomElement child = element.firstChildElement("container");
+    calendar->container = GlobalContainer::deserialize(child);
+
+    return calendar;
+}
+
 

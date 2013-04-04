@@ -65,4 +65,21 @@ QDomElement DailySchedule::serialize(QDomDocument &document) const
     return element;
 }
 
+std::shared_ptr<DailySchedule> DailySchedule::deserialize(QDomElement element)
+{
+    if (element.tagName() != "schedule") {
+        std::cerr << "Not a schedule" << std::endl;
+    }
+
+    DailySchedule* schedule = new DailySchedule;
+
+    for (QDomElement child = element.firstChildElement("event");
+         !child.isNull();
+         child = child.nextSiblingElement("event")) {
+        schedule->addEvent(Event::deserialize(child));
+    }
+
+    return DailyScheduleSPtr(schedule);
+}
+
 int DailySchedule::count = 0;
