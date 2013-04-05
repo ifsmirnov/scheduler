@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr day, QWidget *parent) :
+DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr &day, QWidget *parent) :
     QWidget(parent), day_(day) {
 }
 
@@ -48,6 +48,7 @@ DailyScheduleSPtr DayScheduleWidget::day() {
 DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
     QWidget(parent), day_(day)
 {
+    setWindowTitle(date.toString());
     //entire window
     QBoxLayout* dayWidgetLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
@@ -73,7 +74,7 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
 
     //timeLine
     QBoxLayout* hoursLabelsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    DayScheduleWidget_ = new DayScheduleWidget(day, this);
+    DayScheduleWidget_ = new DayScheduleWidget(day_, this);
     //DayScheduleWidget_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     timeLineLayout->addLayout(hoursLabelsLayout);
@@ -99,5 +100,6 @@ QSize DayWidget::sizeHint() const {
 void DayWidget::addEvent() {
     AddEventDialog* eventDialog = new AddEventDialog(day_, this);
     eventDialog->show();
+    update();
 }
 

@@ -27,7 +27,7 @@ class DayScheduleWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DayScheduleWidget(DailyScheduleSPtr day, QWidget *parent = 0);
+    explicit DayScheduleWidget(DailyScheduleSPtr &day, QWidget *parent = 0);
 
 public:
     DailyScheduleSPtr day();
@@ -36,7 +36,7 @@ public slots:
     void paintEvent(QPaintEvent *);
 
 private:
-    DailyScheduleSPtr day_;
+    DailyScheduleSPtr &day_;
 };
 
 

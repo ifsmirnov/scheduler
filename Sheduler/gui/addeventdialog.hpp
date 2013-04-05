@@ -17,14 +17,14 @@ class AddEventDialog: public QDialog
 {
     Q_OBJECT
 public:
-    explicit AddEventDialog(DailyScheduleSPtr day, QWidget *parent = 0);
+    explicit AddEventDialog(DailyScheduleSPtr &day, QWidget *parent = 0);
 
 private:
     QLineEdit* hours_;
     QLineEdit* minutes_;
     QLineEdit* duration_;
     QTextEdit* info_;
-    DailyScheduleSPtr day_;
+    DailyScheduleSPtr &day_;
 
 private slots:
     void addEvent();
