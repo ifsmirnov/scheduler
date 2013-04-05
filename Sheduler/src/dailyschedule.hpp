@@ -4,6 +4,8 @@
 #include <memory>
 
 #include <QVector>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include "event.hpp"
 #include "regularevent.hpp"
@@ -25,6 +27,9 @@ public:
     // think over if this getters should be constant -- IS
 
     void addEvent(Event* event);
+
+    QDomElement serialize(QDomDocument &document) const;
+    static std::shared_ptr<DailySchedule> deserialize(QDomElement element);
 
 public:
     static int count;

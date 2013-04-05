@@ -1,5 +1,8 @@
 #include <QApplication>
 #include <QPalette>
+#include <QFile>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include <iostream>
 #include <stdexcept>
@@ -10,6 +13,8 @@
 #include <src/regularevent.hpp>
 #include <src/irregularevent.hpp>
 #include <src/calendar/calendar.hpp>
+#include <src/calendar/monthcontainer.hpp>
+#include <src/calendar/globalcontainer.hpp>
 #include <src/day.hpp>
 #include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
@@ -24,7 +29,7 @@ int main(int argc, char* argv[]) {
 
     Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
-    QDate end(2002, 06, 10);
+    QDate end(2002, 03, 14);
 
     DailyScheduleSPtr schedule(new DailySchedule);
 
@@ -35,18 +40,8 @@ int main(int argc, char* argv[]) {
         calendar->setSchedule(t, schedule->clone());
     }
 
-    //std::cerr << DailySchedule::count << std::endl;
-    //std::cerr << Event::count << std::endl;
+    std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
 
-    //std::cerr << calendar->getDaysInRange(QDate(2001, 02, 01), QDate(2002, 03, 13)).size() << std::endl;
-
-    delete calendar;
-
-    //schedule.reset();
-
-    //std::cerr << DailySchedule::count << std::endl;
-    //std::cerr << Event::count << std::endl;
-    //std::cerr << schedule->events().size() << std::endl;
 
     DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
     dayWidget->show();

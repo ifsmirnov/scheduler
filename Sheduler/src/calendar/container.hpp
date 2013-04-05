@@ -6,6 +6,8 @@
 
 #include <QVector>
 #include <QDate>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include "src/dailyschedule.hpp"
 
@@ -27,6 +29,9 @@ public:
                                 QDate end,
                                 QVector<DailyScheduleSPtr> &result) = 0;
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule) = 0;
+
+    virtual QDomElement serialize(QDomDocument &document) const = 0;
+    //virtual static Container *deserialize(QDomElement element);
 };
 
 } // calendar_containers

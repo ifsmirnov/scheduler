@@ -21,8 +21,11 @@ public:
                         QVector<DailyScheduleSPtr> &result);
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule);
 
+    virtual QDomElement serialize(QDomDocument &document) const;
+    static YearContainer *deserialize(QDomElement element);
+
 private:
-    QVector<MonthContainer> entries;
+    QVector<MonthContainer*> entries;
 };
 
 } // calendar_containers

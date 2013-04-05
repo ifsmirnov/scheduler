@@ -23,6 +23,12 @@ public:
                         QVector<DailyScheduleSPtr> &result);
     virtual void setSchedule(QDate date, DailyScheduleSPtr schedule);
 
+    virtual QDomElement serialize(QDomDocument &document) const;
+    static GlobalContainer *deserialize(QDomElement element);
+
+public:
+    static int count;
+
 private:
     std::map<int, YearContainer*> years;
 

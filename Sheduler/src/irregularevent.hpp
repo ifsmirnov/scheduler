@@ -30,6 +30,8 @@ public:
 
     virtual Event *clone() const;
 
+    virtual QDomElement serialize(QDomDocument &document) const;
+
 private:
     QTime begin_, end_;
     QString info_;
