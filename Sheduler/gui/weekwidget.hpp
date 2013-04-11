@@ -5,9 +5,31 @@
 #include <QWidget>
 #include <QLabel>
 #include <QDate>
+#include <QTime>
+#include <QPainter>
 #include <QGridLayout>
+#include <iostream>
 #include <src/dailyschedule.hpp>
+#include <src/event.hpp>
 #include <gui/daywidget.hpp>
+
+class DayOfWeek : public QWidget
+{
+    Q_OBJECT
+
+private:
+    DailyScheduleSPtr dailySchedule;
+
+public:
+    DayOfWeek(DailyScheduleSPtr dailySchedule, QWidget *parent = 0);
+
+signals:
+
+public slots:
+    void paintEvent(QPaintEvent *);
+    QSize sizeHint() const;
+
+};
 
 class WeekWidget : public QWidget
 {
@@ -16,8 +38,8 @@ class WeekWidget : public QWidget
 private:
     QVector<DailyScheduleSPtr> dailySchedules;
     QHBoxLayout* layout;
-    QVector<QLabel*> dateLabels;
-    QVector<DayWidget*> dayWidgets;
+    QVector<DayOfWeek*> dayFrames;
+    QVector<QFrame*> frames;
     QDate firstDay;
 
 public:
@@ -26,7 +48,7 @@ public:
 signals:
     
 public slots:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *);    
     
 };
 

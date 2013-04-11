@@ -48,13 +48,11 @@ int main(int argc, char* argv[]) {
     std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
 
     QVector<DailyScheduleSPtr> dailySchedules;
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
+    for (int i = 0; i < 6; ++i)
+    {
+        dailySchedules.push_back(schedule);
+    }
+
     WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);
     weekWidget->show();
     //schedule.reset();
@@ -64,7 +62,7 @@ int main(int argc, char* argv[]) {
     //std::cerr << schedule->events().size() << std::endl;
 
     DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
-    dayWidget->show();
+    //dayWidget->show();
 
     return app.exec();
 }
