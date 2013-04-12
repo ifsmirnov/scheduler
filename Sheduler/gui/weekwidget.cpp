@@ -1,5 +1,7 @@
 #include "gui/weekwidget.hpp"
 
+#include <cstdlib>
+
 WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules, QWidget *parent) :
     QWidget(parent), dailySchedules(dailySchedules), firstDay(firstDay)
 {
@@ -56,6 +58,7 @@ WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules
 
 void WeekWidget::paintEvent(QPaintEvent* event)
 {
+    std::cerr << "paintEvent " << rand() << std::endl;
     for (auto frame : frames)
     {
         if (frame->underMouse())
@@ -72,7 +75,7 @@ void WeekWidget::paintEvent(QPaintEvent* event)
 DayOfWeek::DayOfWeek(DailyScheduleSPtr dailySchedule, QWidget *parent) :
     QWidget(parent), dailySchedule(dailySchedule)
 {
-   // setMinimumWidth(100);
+    setMinimumWidth(100);
 }
 
 void DayOfWeek::paintEvent(QPaintEvent* event)
@@ -92,15 +95,13 @@ void DayOfWeek::paintEvent(QPaintEvent* event)
     QVector<Event*> events = dailySchedule->events();
     for (int i = 0; i < events.size(); ++i)
     {
-        int begin = QTime(0, 0).secsTo(events[i]->begin()) / secsInDay;
-        int end = QTime(0, 0).secsTo(events[i]->end()) / secsInDay;
+        double begin = QTime(0, 0).secsTo(events[i]->begin()) / secsInDay;
+        double end = QTime(0, 0).secsTo(events[i]->end()) / secsInDay;
 
-        begin *= h;
-        end *= h;
+        int eventX = begin * h;
+        int eventHeight = end * h - eventX;
 
-        std::cerr << begin << " " << end << std::endl;
-
-        painter.drawRect(0, begin, w, end - 1);
+        painter.drawRect(0, eventX, w, eventHeight);
     }
 }
 
