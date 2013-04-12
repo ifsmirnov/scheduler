@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include <QDate>
+#include <QFile>
 
 #include <src/event.hpp>
 #include <src/regularevent.hpp>
@@ -17,9 +18,6 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPalette pal = app.palette();
-
-    pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
-    app.setPalette(pal);
 
     Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
@@ -48,6 +46,7 @@ int main(int argc, char* argv[]) {
     //std::cerr << schedule->events().size() << std::endl;
 
     DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
+    dayWidget->setStyleSheet("QPushButton {  color: white; background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);}");
     dayWidget->show();
 
     return app.exec();
