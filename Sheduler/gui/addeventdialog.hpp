@@ -8,10 +8,10 @@
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QValidator>
+#include <stdexcept>
 
 #include "src/irregularevent.hpp"
 #include "src/dailyschedule.hpp"
-
 
 class AddEventDialog: public QDialog
 {

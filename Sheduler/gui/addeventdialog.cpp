@@ -1,6 +1,6 @@
 #include "addeventdialog.hpp"
 
-AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
+AddEventDialog::AddEventDialog(DailyScheduleSPtr day, QWidget *parent):
     QDialog(parent), day_(day)
 {
     setWindowTitle("Add Event");
@@ -28,7 +28,10 @@ AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
     minutes_ = new QLineEdit();
 
     hours_->setValidator(new QIntValidator(0, 23, this));
+    hours_->setMaxLength(2);
     minutes_->setValidator(new QIntValidator(0, 59, this));
+    hours_->setMaxLength(2);
+    minutes_->setMaxLength(2);
 
     eventStartLayout->addWidget(startLabel, 1);
     eventStartLayout->addWidget(hours_);
@@ -53,10 +56,13 @@ AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
 
 void AddEventDialog::addEvent() {
     Event* event = new IrregularEvent();
-    event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
-    event->setDuration(duration_->text().toInt() * 60);
-    event->setInfo(info_->toPlainText());
-    day_ = day_->clone();
-    day_->addEvent(event);
-    close();
+    try {
+        event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
+        event->setDuration(duration_->text().toInt() * 60);
+        event->setInfo(info_->toPlainText());
+        day_->addEvent(event);
+        close();
+    } catch(std::invalid_argument ex) {
+        delete event;
+    }
 }
