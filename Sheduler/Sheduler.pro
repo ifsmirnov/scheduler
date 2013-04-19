@@ -12,7 +12,11 @@ SOURCES += \
     src/calendar/monthcontainer.cpp \
     src/calendar/container.cpp \
     src/calendar/globalcontainer.cpp \
-    gui/addeventdialog.cpp
+    gui/addeventdialog.cpp \
+    src/managers/schedulemanager.cpp \
+    src/managers/singlemanager.cpp \
+    src/managers/weekmanager.cpp \
+    src/managers/collectionmanager.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -27,7 +31,11 @@ HEADERS += \
     src/calendar/monthcontainer.hpp \
     src/calendar/container.hpp \
     src/calendar/globalcontainer.hpp \
-    gui/addeventdialog.hpp
+    gui/addeventdialog.hpp \
+    src/managers/schedulemanager.hpp \
+    src/managers/singlemanager.hpp \
+    src/managers/weekmanager.hpp \
+    src/managers/collectionmanager.hpp
 
 INCLUDEPATH += DEPENDPATH
 
