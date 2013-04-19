@@ -37,12 +37,15 @@ void testManagers()
     WeekManager *weekManager =
             dynamic_cast<WeekManager*>(manager->getChildManager(1));
 
-    singleManager->addEvent(nullptr, QDate(2013, 04, 19));
-    weekManager->addEvent(nullptr, 4);
+    singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
+    weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
 
     std::cerr << manager->getEvents(QDate(2013, 04, 19)).size() << std::endl;
+    std::cerr << "Events count: " << Event::count << std::endl;
 
     delete manager;
+
+    std::cerr << "Events count: " << Event::count << std::endl;
 }
 
 int main(int argc, char* argv[]) {

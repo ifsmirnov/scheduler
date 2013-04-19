@@ -8,6 +8,9 @@ SingleManager::SingleManager()
 
 SingleManager::~SingleManager()
 {
+    for (auto event: events) {
+        delete event.second;
+    }
 }
 
 QVector<Event *> SingleManager::getEvents(QDate date)

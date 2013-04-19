@@ -9,6 +9,11 @@ WeekManager::WeekManager()
 
 WeekManager::~WeekManager()
 {
+    for (int dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+        for (auto event: events[dayOfWeek]) {
+            delete event;
+        }
+    }
 }
 
 QVector<Event *> WeekManager::getEvents(QDate date)
