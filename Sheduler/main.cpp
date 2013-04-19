@@ -5,6 +5,7 @@
 #include <QDomDocument>
 
 #include <iostream>
+#include <cassert>
 #include <stdexcept>
 
 #include <QDate>
@@ -20,8 +21,37 @@
 #include <gui/daywidget.hpp>
 #include <gui/weekwidget.hpp>
 
+#include "src/managers/collectionmanager.hpp"
+#include "src/managers/schedulemanager.hpp"
+#include "src/managers/singlemanager.hpp"
+#include "src/managers/weekmanager.hpp"
+
+void testManagers()
+{
+    CollectionManager *manager = new CollectionManager;
+    manager->addChildManager(new SingleManager);
+    manager->addChildManager(new WeekManager);
+
+    SingleManager *singleManager =
+            dynamic_cast<SingleManager*>(manager->getChildManager(0));
+    WeekManager *weekManager =
+            dynamic_cast<WeekManager*>(manager->getChildManager(1));
+
+    singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
+    weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
+
+    std::cerr << manager->getEvents(QDate(2013, 04, 19)).size() << std::endl;
+    std::cerr << "Events count: " << Event::count << std::endl;
+
+    delete manager;
+
+    std::cerr << "Events count: " << Event::count << std::endl;
+}
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
+
+    /*
     QPalette pal = app.palette();
 
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
@@ -55,7 +85,10 @@ int main(int argc, char* argv[]) {
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
     WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);
-    weekWidget->show();
+    weekWidget->show();*/
 
-    return app.exec();
+    testManagers();
+
+    //return app.exec();
+    return 0;
 }
