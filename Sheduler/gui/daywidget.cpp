@@ -14,21 +14,13 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
     int coeff = 60 * 60 * 24;
 
     QVector<Event*> events = day()->events();
-
-    for (int hour = 0; hour < 24; hour++) {
-        int begin = (double)(QTime(0, 0).secsTo(QTime(hour, 0))) / coeff * height();
-        int len = (double)(60*60) / coeff * height();
-        if (begin % 2 == 1) {
-            begin--;
-            len++;
-        }
-        if (len % 2 == 1  &&  hour != 23) {
-            len++;
-        }
-        QRect hourRect(rect().left(), begin, rect().width()-1, len);
-        painter.setPen(Qt::black);
-        painter.setBrush(Qt::white);
-        painter.drawRect(hourRect);
+    QRect timeRect(rect().left(), 0, rect().width() - 1, height() - 1);
+    painter.setPen(Qt::black);
+    painter.setBrush(Qt::white);
+    painter.drawRect(timeRect);
+    for (int hour = 1; hour < 24; hour++) {
+        int h = (double)(QTime(0, 0).secsTo(QTime(hour, 0))) / coeff * height();
+        painter.drawLine(QPoint(rect().left(), h), QPoint(rect().width() - 1, h));
     }
 
     for (auto event: events) {
