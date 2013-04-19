@@ -18,6 +18,13 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
     for (int hour = 0; hour < 24; hour++) {
         int begin = (double)(QTime(0, 0).secsTo(QTime(hour, 0))) / coeff * height();
         int len = (double)(60*60) / coeff * height();
+        if (begin % 2 == 1) {
+            begin--;
+            len++;
+        }
+        if (len % 2 == 1  &&  hour != 23) {
+            len++;
+        }
         QRect hourRect(rect().left(), begin, rect().width()-1, len);
         painter.setPen(Qt::black);
         painter.setBrush(Qt::white);
@@ -49,14 +56,26 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
     QWidget(parent), day_(day)
 {
     //entire window
+    setWindowTitle(date.toString());
     QBoxLayout* dayWidgetLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QLabel* title = new QLabel(date.toString());
+    title->setAlignment(Qt::AlignCenter);
+    title->setFont(QFont("Courier", 15));
 
     //labels + events
+    QFrame* timeLineFrame = new QFrame();
     QBoxLayout* timeLineLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    QPalette pal = timeLineFrame->palette();
+
+    timeLineFrame->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    timeLineFrame->setLayout(timeLineLayout);
+    //pal.setColor( backgroundRole(), );
+
     //buttons at the bottom of window
     QBoxLayout* menuLineLayout = new QBoxLayout(QBoxLayout::RightToLeft);
 
-    dayWidgetLayout->addLayout(timeLineLayout);
+    dayWidgetLayout->addWidget(title);
+    dayWidgetLayout->addWidget(timeLineFrame);
     dayWidgetLayout->addLayout(menuLineLayout);
 
     //bottom menu

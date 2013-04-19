@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QDate>
+#include <QFrame>
 
 #include "src/dailyschedule.hpp"
 #include "src/event.hpp"
