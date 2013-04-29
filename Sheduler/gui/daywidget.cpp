@@ -4,16 +4,35 @@
 #include <iostream>
 
 
-DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr &day, QWidget *parent) :
-    QWidget(parent), day_(day) {
+DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr &day, QCheckBox* showRegular, QCheckBox* showIrregular, QWidget *parent) :
+    QWidget(parent), day_(day), showRegular_(showRegular), showIrregular_(showIrregular) {
+    connect(showRegular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
+    connect(showIrregular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
+}
+
+void DayScheduleWidget::stateChanged() {
+    repaint();
 }
 
 void DayScheduleWidget::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
+    int letterHeight = 16;
+    int letterWidth = 10;
     int coeff = 60 * 60 * 24;
 
     QVector<Event*> events = day()->events();
+
+    QVector<Event*> regularEvents;
+    QVector<Event*> irregularEvents;
+
+    for (auto event: events) {
+        if (event->isRegular()) {
+            regularEvents.push_back(event);
+        } else {
+            irregularEvents.push_back(event);
+        }
+    }
 
     for (int hour = 0; hour < 24; hour++) {
         int begin = (double)(QTime(0, 0).secsTo(QTime(hour, 0))) / coeff * height();
@@ -31,18 +50,35 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
         painter.drawRect(hourRect);
     }
 
-    for (auto event: events) {
-        int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
-        int len = (double)event->duration() / coeff * height();
-        //std::cout << height() << ' ' << len << std::endl;
-        QRect eventRect(rect().left(), begin, rect().width()-1, len);
-        if (event->isRegular()) {
-            painter.setBrush(QColor(Qt::blue).lighter(150));
-        } else {
-            painter.setBrush(QColor(Qt::red).lighter(150));
+    if (showRegular_->isChecked()) {
+        painter.setBrush(QColor(Qt::blue).lighter(150));
+        for (auto event: regularEvents) {
+            int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
+            int len = (double)event->duration() / coeff * height();
+            //std::cout << height() << ' ' << len << std::endl;
+            QRect eventRect(rect().left(), begin, rect().width()-1, len);
+            //std::cerr << event->duration() << std::endl;
+            painter.drawRect(eventRect);
+            std::cout << eventRect.height() << std::endl;
+            painter.setFont(QFont("times", -1, -1, true));
+            if (eventRect.height() >= letterHeight  &&  event->info().length() * letterWidth <= eventRect.width()) {
+                painter.drawText(eventRect, Qt::AlignLeft, event->info());
+            }
         }
-        //std::cerr << event->duration() << std::endl;
-        painter.drawRect(eventRect);
+    }
+
+    if (showIrregular_->isChecked()) {
+        painter.setBrush(QColor(Qt::red).lighter(150));
+        for (auto event: irregularEvents) {
+            int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
+            int len = (double)event->duration() / coeff * height();
+            QRect eventRect(rect().left(), begin, rect().width()-1, len);
+            painter.drawRect(eventRect);
+            painter.setFont(QFont("verdana", -1, -1, true));
+            if (eventRect.height() >= letterHeight  &&  event->info().length() * letterWidth <= eventRect.width()) {
+                painter.drawText(eventRect, Qt::AlignLeft, event->info());
+            }
+        }
     }
 }
 
@@ -63,6 +99,18 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
     title->setAlignment(Qt::AlignCenter);
     title->setFont(QFont("Courier", 15));
 
+    //draw settings
+    QHBoxLayout* drawSettLayout = new QHBoxLayout();
+    QLabel* showEvents = new QLabel("Show events: ");
+    QCheckBox* showRegularEvents = new QCheckBox("regular");
+    QCheckBox* showIrregularEvents = new QCheckBox("irregular");
+
+    showRegularEvents->setChecked(true);
+    showIrregularEvents->setChecked(true);
+    drawSettLayout->addWidget(showEvents);
+    drawSettLayout->addWidget(showRegularEvents);
+    drawSettLayout->addWidget(showIrregularEvents);
+
     //labels + events
     QFrame* timeLineFrame = new QFrame();
     QBoxLayout* timeLineLayout = new QBoxLayout(QBoxLayout::LeftToRight);
@@ -76,6 +124,7 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
     QBoxLayout* menuLineLayout = new QBoxLayout(QBoxLayout::RightToLeft);
 
     dayWidgetLayout->addWidget(title);
+    dayWidgetLayout->addLayout(drawSettLayout);
     dayWidgetLayout->addWidget(timeLineFrame);
     dayWidgetLayout->addLayout(menuLineLayout);
 
@@ -93,7 +142,7 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
 
     //timeLine
     QBoxLayout* hoursLabelsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    DayScheduleWidget_ = new DayScheduleWidget(day_, this);
+    DayScheduleWidget_ = new DayScheduleWidget(day_, showRegularEvents, showIrregularEvents, this);
     //DayScheduleWidget_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     timeLineLayout->addLayout(hoursLabelsLayout);

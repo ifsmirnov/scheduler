@@ -27,6 +27,44 @@
 #include "src/managers/singlemanager.hpp"
 #include "src/managers/weekmanager.hpp"
 
+
+void testDayWidget() {
+
+
+    Calendar *calendar = new Calendar;
+    QDate begin(2001, 03, 14);
+    QDate end(2002, 03, 14);
+
+    DailyScheduleSPtr schedule(new DailySchedule);
+
+    schedule->addEvent(new RegularEvent(QTime(1, 0), 3000, "YAHOO!"));
+    //schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
+
+    for (QDate t = begin; t <= end; t = t.addDays(1)) {
+        calendar->setSchedule(t, schedule->clone());
+    }
+
+    std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
+
+
+    DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
+    //dayWidget->setStyleSheet("QPushButton {  color: white; background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);}");
+    dayWidget->show();
+
+    QVector<DailyScheduleSPtr> dailySchedules;
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+
+    WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
+    weekWidget->show();
+
+}
+
 void testManagers()
 {
     CollectionManager *manager = new CollectionManager;
@@ -51,46 +89,15 @@ void testManagers()
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-
-    /*
     QPalette pal = app.palette();
 
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
     app.setPalette(pal);
 
-    Calendar *calendar = new Calendar;
-    QDate begin(2001, 03, 14);
-    QDate end(2002, 03, 14);
-
-    DailyScheduleSPtr schedule(new DailySchedule);
-
-    schedule->addEvent(new RegularEvent(QTime::currentTime(), 1000));
-    //schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
-
-    for (QDate t = begin; t <= end; t = t.addDays(1)) {
-        calendar->setSchedule(t, schedule->clone());
-    }
-
-    std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
-
-
-    DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
-    //dayWidget->setStyleSheet("QPushButton {  color: white; background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);}");
-    dayWidget->show();
-
-    QVector<DailyScheduleSPtr> dailySchedules;
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
-    WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);
-    weekWidget->show();*/
+    testDayWidget();
 
     testManagers();
 
-    //return app.exec();
-    return 0;
+    return app.exec();
+    //return 0;
 }
