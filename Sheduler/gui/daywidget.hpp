@@ -11,6 +11,7 @@
 #include <QFrame>
 #include <QToolTip>
 #include <QCheckBox>
+#include <QMouseEvent>
 
 #include "src/dailyschedule.hpp"
 #include "src/event.hpp"
@@ -38,13 +39,16 @@ public:
 public slots:
     void paintEvent(QPaintEvent *);
     void stateChanged();
+    void mouseReleaseEvent(QMouseEvent *);
 
 private:
     DailyScheduleSPtr &day_;
     QCheckBox* showRegular_;
     QCheckBox* showIrregular_;
+    QVector<Event*> regularEvents_;
+    QVector<Event*> irregularEvents_;
 
-
+    QRect getEventRect(Event*) const;
 };
 
 

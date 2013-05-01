@@ -14,6 +14,13 @@ void DayScheduleWidget::stateChanged() {
     repaint();
 }
 
+QRect DayScheduleWidget::getEventRect(Event *event) const {
+    int coeff = 60 * 60 * 24;
+    int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
+    int len = (double)event->duration() / coeff * height();
+    return QRect(rect().left(), begin, rect().width()-1, len);
+}
+
 void DayScheduleWidget::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
@@ -23,14 +30,14 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
 
     QVector<Event*> events = day()->events();
 
-    QVector<Event*> regularEvents;
-    QVector<Event*> irregularEvents;
+    regularEvents_.clear();
+    irregularEvents_.clear();
 
     for (auto event: events) {
         if (event->isRegular()) {
-            regularEvents.push_back(event);
+            regularEvents_.push_back(event);
         } else {
-            irregularEvents.push_back(event);
+            irregularEvents_.push_back(event);
         }
     }
 
@@ -52,14 +59,12 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
 
     if (showRegular_->isChecked()) {
         painter.setBrush(QColor(Qt::blue).lighter(150));
-        for (auto event: regularEvents) {
-            int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
-            int len = (double)event->duration() / coeff * height();
+        for (auto event: regularEvents_) {
             //std::cout << height() << ' ' << len << std::endl;
-            QRect eventRect(rect().left(), begin, rect().width()-1, len);
+            QRect eventRect = getEventRect(event);
             //std::cerr << event->duration() << std::endl;
             painter.drawRect(eventRect);
-            std::cout << eventRect.height() << std::endl;
+            //std::cout << eventRect.height() << std::endl;
             painter.setFont(QFont("times", -1, -1, true));
             if (eventRect.height() >= letterHeight  &&  event->info().length() * letterWidth <= eventRect.width()) {
                 painter.drawText(eventRect, Qt::AlignLeft, event->info());
@@ -69,10 +74,8 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
 
     if (showIrregular_->isChecked()) {
         painter.setBrush(QColor(Qt::red).lighter(150));
-        for (auto event: irregularEvents) {
-            int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
-            int len = (double)event->duration() / coeff * height();
-            QRect eventRect(rect().left(), begin, rect().width()-1, len);
+        for (auto event: irregularEvents_) {
+            QRect eventRect = getEventRect(event);
             painter.drawRect(eventRect);
             painter.setFont(QFont("verdana", -1, -1, true));
             if (eventRect.height() >= letterHeight  &&  event->info().length() * letterWidth <= eventRect.width()) {
@@ -81,6 +84,32 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
         }
     }
 }
+
+
+void DayScheduleWidget::mouseReleaseEvent(QMouseEvent* mouseEvent) {
+    QToolTip::hideText();
+    QString text = "";
+    for (auto event: regularEvents_) {
+        if (getEventRect(event).contains(mouseEvent->pos())) {
+            if (text.length() != 0) {
+                text += "\n";
+            }
+            text += "[R] " + event->begin().toString("hh:mm") + " " + event->info();
+        }
+    }
+    for (auto event: irregularEvents_) {
+        if (getEventRect(event).contains(mouseEvent->pos())) {
+            if (text.length() != 0) {
+                text += "\n";
+            }
+            text += "[I] " + event->begin().toString("hh:mm") + " " + event->info();
+        }
+    }
+    if (text.length() != 0) {
+        QToolTip::showText(mouseEvent->globalPos(), text, this);
+    }
+}
+
 
 DailyScheduleSPtr DayScheduleWidget::day() {
     return day_;

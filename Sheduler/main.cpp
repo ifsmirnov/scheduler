@@ -38,6 +38,7 @@ void testDayWidget() {
     DailyScheduleSPtr schedule(new DailySchedule);
 
     schedule->addEvent(new RegularEvent(QTime(1, 0), 3000, "YAHOO!"));
+    schedule->addEvent(new IrregularEvent(QTime(1, 30), 60 * 90, "YAHOOHOO!"));
     //schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
 
     for (QDate t = begin; t <= end; t = t.addDays(1)) {
