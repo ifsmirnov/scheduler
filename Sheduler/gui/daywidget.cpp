@@ -89,20 +89,21 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
 void DayScheduleWidget::mouseReleaseEvent(QMouseEvent* mouseEvent) {
     QToolTip::hideText();
     QString text = "";
+    int minutes = double(mouseEvent->pos().y()) / (height() / double(24 * 60));
     for (auto event: regularEvents_) {
         if (getEventRect(event).contains(mouseEvent->pos())) {
-            if (text.length() != 0) {
-                text += "\n";
+            if (!text.length()) {
+                text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
             }
-            text += "[R] " + event->begin().toString("hh:mm") + " " + event->info();
+            text += "\n[R] " + event->begin().toString("hh:mm") + " " + event->info();
         }
     }
     for (auto event: irregularEvents_) {
         if (getEventRect(event).contains(mouseEvent->pos())) {
-            if (text.length() != 0) {
-                text += "\n";
+            if (!text.length()) {
+                text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
             }
-            text += "[I] " + event->begin().toString("hh:mm") + " " + event->info();
+            text += "\n[I] " + event->begin().toString("hh:mm") + " " + event->info();
         }
     }
     if (text.length() != 0) {
