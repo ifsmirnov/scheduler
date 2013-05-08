@@ -39,7 +39,7 @@ public:
 public slots:
     void paintEvent(QPaintEvent *);
     void stateChanged();
-    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
 private:
     DailyScheduleSPtr &day_;

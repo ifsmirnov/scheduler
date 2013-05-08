@@ -8,6 +8,7 @@ DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr &day, QCheckBox* showRegu
     QWidget(parent), day_(day), showRegular_(showRegular), showIrregular_(showIrregular) {
     connect(showRegular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
     connect(showIrregular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
+    setMouseTracking(true);
 }
 
 void DayScheduleWidget::stateChanged() {
@@ -86,24 +87,28 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
 }
 
 
-void DayScheduleWidget::mouseReleaseEvent(QMouseEvent* mouseEvent) {
+void DayScheduleWidget::mouseMoveEvent(QMouseEvent* mouseEvent) {
     QToolTip::hideText();
     QString text = "";
     int minutes = double(mouseEvent->pos().y()) / (height() / double(24 * 60));
-    for (auto event: regularEvents_) {
-        if (getEventRect(event).contains(mouseEvent->pos())) {
-            if (!text.length()) {
-                text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
+    if (showRegular_->isChecked()) {
+        for (auto event: regularEvents_) {
+            if (getEventRect(event).contains(mouseEvent->pos())) {
+                if (!text.length()) {
+                    text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
+                }
+                text += "\n[R] " + event->begin().toString("hh:mm") + " " + event->info();
             }
-            text += "\n[R] " + event->begin().toString("hh:mm") + " " + event->info();
         }
     }
-    for (auto event: irregularEvents_) {
-        if (getEventRect(event).contains(mouseEvent->pos())) {
-            if (!text.length()) {
-                text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
+    if (showIrregular_->isChecked()) {
+        for (auto event: irregularEvents_) {
+            if (getEventRect(event).contains(mouseEvent->pos())) {
+                if (!text.length()) {
+                    text = QTime(minutes / 60, minutes % 60).toString("hh:mm");
+                }
+                text += "\n[I] " + event->begin().toString("hh:mm") + " " + event->info();
             }
-            text += "\n[I] " + event->begin().toString("hh:mm") + " " + event->info();
         }
     }
     if (text.length() != 0) {
