@@ -4,8 +4,12 @@
 #include <iostream>
 
 
-DayScheduleWidget::DayScheduleWidget(DailyScheduleSPtr &day, QCheckBox* showRegular, QCheckBox* showIrregular, QWidget *parent) :
-    QWidget(parent), day_(day), showRegular_(showRegular), showIrregular_(showIrregular) {
+DayScheduleWidget::DayScheduleWidget(ScheduleManager *manager,
+                                     QDate date,
+                                     QCheckBox* showRegular,
+                                     QCheckBox* showIrregular,
+                                     QWidget *parent) :
+    QWidget(parent), date_(date), manager_(manager), showRegular_(showRegular), showIrregular_(showIrregular) {
     connect(showRegular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
     connect(showIrregular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
     setMouseTracking(true);
@@ -29,7 +33,7 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
     int letterWidth = 10;
     int coeff = 60 * 60 * 24;
 
-    QVector<Event*> events = day()->events();
+    QVector<Event*> events = manager_->getEvents(date_);
     //QRect timeRect(rect().left(), 0, rect().width() - 1, height() - 1);
     //painter.setPen(Qt::black);
     //painter.setBrush(Qt::white);
@@ -123,15 +127,8 @@ void DayScheduleWidget::mouseMoveEvent(QMouseEvent* mouseEvent) {
     }
 }
 
-
-DailyScheduleSPtr DayScheduleWidget::day() {
-    return day_;
-}
-
-
-
-DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
-    QWidget(parent), day_(day)
+DayWidget::DayWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
+    QWidget(parent), manager_(manager)
 {
     setWindowTitle(date.toString());
     //entire window
@@ -184,7 +181,7 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
 
     //timeLine
     QBoxLayout* hoursLabelsLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    DayScheduleWidget_ = new DayScheduleWidget(day_, showRegularEvents, showIrregularEvents, this);
+    DayScheduleWidget_ = new DayScheduleWidget(manager_, date, showRegularEvents, showIrregularEvents, this);
     //DayScheduleWidget_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     timeLineLayout->addLayout(hoursLabelsLayout);
@@ -197,10 +194,6 @@ DayWidget::DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent) :
 }
 
 void DayWidget::paintEvent(QPaintEvent *) {
-}
-
-DailyScheduleSPtr DayWidget::day() {
-    return day_;
 }
 
 QSize DayWidget::sizeHint() const {
