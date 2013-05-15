@@ -19,7 +19,7 @@ public:
 
 public:
     virtual QVector<Event*> getEvents(QDate date);
-    void addEvent(Event *event, QDate date);
+    void addEvent(QDate date, Event *event);
 
 private:
     QVector<pair<QDate, Event*> > events;

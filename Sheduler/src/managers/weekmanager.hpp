@@ -15,7 +15,7 @@ public:
 
 public:
     virtual QVector<Event*> getEvents(QDate date);
-    void addEvent(Event *event, int dayOfWeek);
+    void addEvent(int dayOfWeek, Event *event);
 
 private:
     QVector<Event*> events[7];
