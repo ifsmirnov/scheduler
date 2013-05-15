@@ -20,13 +20,13 @@ QVector<Event *> CollectionManager::getEvents(QDate date)
     return result;
 }
 
-int CollectionManager::addChildManager(ScheduleManager *manager)
+ScheduleManager *CollectionManager::addChildManager(ScheduleManager *manager)
 {
     managers.push_back(manager);
-    return managers.size() - 1;
+    return manager;
 }
 
-int CollectionManager::childCount() const
+/*int CollectionManager::childCount() const
 {
     return managers.size();
 }
@@ -35,3 +35,4 @@ ScheduleManager *CollectionManager::getChildManager(int id)
 {
     return managers[id];
 }
+*/

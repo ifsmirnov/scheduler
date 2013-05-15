@@ -22,7 +22,7 @@ QVector<Event *> WeekManager::getEvents(QDate date)
     return events[dayOfWeek];
 }
 
-void WeekManager::addEvent(Event *event, int dayOfWeek)
+void WeekManager::addEvent(int dayOfWeek, Event *event)
 {
     events[dayOfWeek].push_back(event);
 }

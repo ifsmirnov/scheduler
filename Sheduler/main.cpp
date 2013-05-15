@@ -31,7 +31,7 @@
 void testDayWidget() {
 
 
-    Calendar *calendar = new Calendar;
+    /*Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
     QDate end(2002, 03, 14);
 
@@ -59,33 +59,40 @@ void testDayWidget() {
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
-    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);*/
 
-    WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
-    weekWidget->show();
+    /*WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
+    weekWidget->show();*/
 
 }
 
 void testManagers()
 {
     CollectionManager *manager = new CollectionManager;
-    manager->addChildManager(new SingleManager);
-    manager->addChildManager(new WeekManager);
+    SingleManager *singleManager = new SingleManager;
+    WeekManager *weekManager = new WeekManager;
+    manager->addChildManager(singleManager);
+    manager->addChildManager(weekManager);
 
-    SingleManager *singleManager =
-            dynamic_cast<SingleManager*>(manager->getChildManager(0));
-    WeekManager *weekManager =
-            dynamic_cast<WeekManager*>(manager->getChildManager(1));
+    //singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
+    //weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
 
-    singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
-    weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
-
-    std::cerr << manager->getEvents(QDate(2013, 04, 19)).size() << std::endl;
+    std::cerr << manager->getEvents(QDate(2013, 04, 12)).size() << std::endl;
     std::cerr << "Events count: " << Event::count << std::endl;
 
     delete manager;
 
     std::cerr << "Events count: " << Event::count << std::endl;
+}
+
+void testManagersWithGui()
+{
+    QDate date = QDate::currentDate();
+    Calendar *calendar = new Calendar;
+    DayWidget *dayWidget = new DayWidget(calendar->getManager(), date);
+    QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                     calendar, SLOT(addIrregularEvent(QDate,Event*)));
+    dayWidget->show();
 }
 
 int main(int argc, char* argv[]) {
@@ -95,9 +102,10 @@ int main(int argc, char* argv[]) {
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
     app.setPalette(pal);
 
-    testDayWidget();
+    //testDayWidget();
 
-    testManagers();
+    //testManagers();
+    testManagersWithGui();
 
     return app.exec();
     //return 0;

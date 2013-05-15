@@ -12,19 +12,23 @@
 
 #include "src/irregularevent.hpp"
 #include "src/dailyschedule.hpp"
+#include "src/managers/schedulemanager.hpp"
 
 class AddEventDialog: public QDialog
 {
     Q_OBJECT
 public:
-    explicit AddEventDialog(DailyScheduleSPtr &day, QWidget *parent = 0);
+    explicit AddEventDialog(QDate date, QWidget *parent = 0);
 
 private:
     QLineEdit* hours_;
     QLineEdit* minutes_;
     QLineEdit* duration_;
     QTextEdit* info_;
-    DailyScheduleSPtr &day_;
+    QDate date_;
+
+signals:
+    void addIrregularEvent(QDate date, Event *event);
 
 private slots:
     void addEvent();

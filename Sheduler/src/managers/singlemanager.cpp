@@ -24,7 +24,7 @@ QVector<Event *> SingleManager::getEvents(QDate date)
     return result;
 }
 
-void SingleManager::addEvent(Event *event, QDate date)
+void SingleManager::addEvent(QDate date, Event *event)
 {
     events.push_back(make_pair(date, event));
 }

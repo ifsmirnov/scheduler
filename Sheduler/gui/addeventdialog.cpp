@@ -1,7 +1,7 @@
 #include "addeventdialog.hpp"
 
-AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
-    QDialog(parent), day_(day)
+AddEventDialog::AddEventDialog(QDate date, QWidget *parent):
+    QDialog(parent), date_(date)
 {
     setWindowTitle("Add Event");
 
@@ -60,7 +60,7 @@ void AddEventDialog::addEvent() {
         event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
         event->setDuration(duration_->text().toInt() * 60);
         event->setInfo(info_->toPlainText());
-        day_->addEvent(event);
+        emit addIrregularEvent(date_, event);
         close();
     } catch(std::invalid_argument ex) {
         delete event;
