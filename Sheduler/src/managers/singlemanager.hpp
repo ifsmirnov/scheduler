@@ -21,6 +21,10 @@ public:
     virtual QVector<Event*> getEvents(QDate date);
     void addEvent(QDate date, Event *event);
 
+    virtual QDomElement serialize(QDomDocument &document);
+    static ScheduleManager *deserialize(QDomElement element);
+
+
 private:
     QVector<pair<QDate, Event*> > events;
 };

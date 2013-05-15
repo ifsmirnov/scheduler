@@ -1,7 +1,6 @@
 #include "schedulemanager.hpp"
 
-/*
-ScheduleManager::ScheduleManager()
+static ScheduleManager* ScheduleManager::deserialize(QDomElement element)
 {
+//TODO
 }
-*/

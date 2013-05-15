@@ -28,3 +28,22 @@ void SingleManager::addEvent(QDate date, Event *event)
 {
     events.push_back(make_pair(date, event));
 }
+
+QDomElement SingleManager::serialize(QDomDocument &document)
+{
+    QDomElement element = document.createElement("manager");
+    element.setAttribute("type", "single");
+
+    for (auto i: events) {
+        QDomElement child = i.second.serialize(document);
+        child.setAttribute("date", i.first.toString("yyyy:mm:dd"));
+        element.appendChild(child);
+    }
+
+    return element;
+}
+
+ScheduleManager *SingleManager::deserialize(QDomElement element)
+{
+    // TODO
+}
