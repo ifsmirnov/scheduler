@@ -9,7 +9,7 @@ DayScheduleWidget::DayScheduleWidget(ScheduleManager *manager,
                                      QCheckBox* showRegular,
                                      QCheckBox* showIrregular,
                                      QWidget *parent) :
-    QWidget(parent), date_(date), manager_(manager), showRegular_(showRegular), showIrregular_(showIrregular) {
+    QWidget(parent), manager_(manager), date_(date), showRegular_(showRegular), showIrregular_(showIrregular) {
     connect(showRegular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
     connect(showIrregular_, SIGNAL(stateChanged(int)), this, SLOT(stateChanged()));
     setMouseTracking(true);
@@ -128,7 +128,7 @@ void DayScheduleWidget::mouseMoveEvent(QMouseEvent* mouseEvent) {
 }
 
 DayWidget::DayWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
-    QWidget(parent), manager_(manager)
+    QWidget(parent), manager_(manager), date_(date)
 {
     setWindowTitle(date.toString());
     //entire window
@@ -201,7 +201,7 @@ QSize DayWidget::sizeHint() const {
 }
 
 void DayWidget::addEvent() {
-    AddEventDialog* eventDialog = new AddEventDialog(day_, this);
+    AddEventDialog* eventDialog = new AddEventDialog(date_, this);
     eventDialog->show();
     update();
 }

@@ -82,6 +82,7 @@ signals:
 private:
     ScheduleManager *manager_;
     DayScheduleWidget* DayScheduleWidget_;
+    QDate date_;
 
 private slots:
     void addEvent();

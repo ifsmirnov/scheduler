@@ -37,16 +37,16 @@ ScheduleManager *Calendar::getManager() const
 
 QDomElement Calendar::serialize(QDomDocument &document) const
 {
-    QDomElement element = document.createElement("calendar");
+    /*QDomElement element = document.createElement("calendar");
 
     element.appendChild(container->serialize(document));
 
-    return element;
+    return element;*/
 }
 
 Calendar *Calendar::deserialize(QDomElement element)
 {
-    if (element.tagName() != "calendar") {
+    /*if (element.tagName() != "calendar") {
         std::cerr << "Not a calendar" << std::endl;
     }
 
@@ -56,7 +56,8 @@ Calendar *Calendar::deserialize(QDomElement element)
     QDomElement child = element.firstChildElement("container");
     calendar->container = GlobalContainer::deserialize(child);
 
-    return calendar;
+    return calendar;*/
+    return nullptr;
 }
 
 
