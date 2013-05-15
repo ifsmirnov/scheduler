@@ -61,26 +61,23 @@ void testDayWidget() {
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
 
-    WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
-    weekWidget->show();
+    /*WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
+    weekWidget->show();*/
 
 }
 
 void testManagers()
 {
     CollectionManager *manager = new CollectionManager;
-    manager->addChildManager(new SingleManager);
-    manager->addChildManager(new WeekManager);
-
-    SingleManager *singleManager =
-            dynamic_cast<SingleManager*>(manager->getChildManager(0));
-    WeekManager *weekManager =
-            dynamic_cast<WeekManager*>(manager->getChildManager(1));
+    SingleManager *singleManager = new SingleManager;
+    WeekManager *weekManager = new WeekManager;
+    manager->addChildManager(singleManager);
+    manager->addChildManager(weekManager);
 
     singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
     weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
 
-    std::cerr << manager->getEvents(QDate(2013, 04, 19)).size() << std::endl;
+    std::cerr << manager->getEvents(QDate(2013, 04, 12)).size() << std::endl;
     std::cerr << "Events count: " << Event::count << std::endl;
 
     delete manager;
@@ -95,7 +92,7 @@ int main(int argc, char* argv[]) {
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
     app.setPalette(pal);
 
-    testDayWidget();
+    //testDayWidget();
 
     testManagers();
 

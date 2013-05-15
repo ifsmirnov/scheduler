@@ -16,9 +16,9 @@ public:
 public:
     virtual QVector<Event*> getEvents(QDate date);
 
-    int addChildManager(ScheduleManager *manager); // returns id
-    int childCount() const;
-    ScheduleManager *getChildManager(int id);
+    ScheduleManager* addChildManager(ScheduleManager *manager); // returns id
+    //int childCount() const;
+    //ScheduleManager *getChildManager(int id);
 
 private:
     QVector<ScheduleManager*> managers;
