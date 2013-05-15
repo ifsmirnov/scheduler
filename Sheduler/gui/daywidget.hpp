@@ -76,7 +76,7 @@ public slots:
     QSize sizeHint() const;
 
 signals:
-    void addRegularEvent(QDate date, Event *event);
+    void addIrregularEvent(QDate date, Event *event);
     void addWeeklyEvent(int dayOfWeek, Event *event);
 
 private:

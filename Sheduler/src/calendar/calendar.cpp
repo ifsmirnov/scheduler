@@ -20,7 +20,7 @@ Calendar::~Calendar()
     delete manager;
 }
 
-void Calendar::addRegularEvent(QDate date, Event *event)
+void Calendar::addIrregularEvent(QDate date, Event *event)
 {
     singleManager->addEvent(date, event);
 }

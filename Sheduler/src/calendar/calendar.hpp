@@ -23,7 +23,7 @@ public:
     ~Calendar();
     
 public slots:
-    void addRegularEvent(QDate date, Event *event);
+    void addIrregularEvent(QDate date, Event *event);
     void addWeeklyEvent(int dayOfWeek, Event *event);
 
 public:
