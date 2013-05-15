@@ -9,6 +9,9 @@
 #include <QBoxLayout>
 #include <QDate>
 #include <QFrame>
+#include <QToolTip>
+#include <QCheckBox>
+#include <QMouseEvent>
 
 #include "src/dailyschedule.hpp"
 #include "src/event.hpp"
@@ -28,16 +31,24 @@ class DayScheduleWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DayScheduleWidget(DailyScheduleSPtr &day, QWidget *parent = 0);
+    explicit DayScheduleWidget(DailyScheduleSPtr &day, QCheckBox* showRegular, QCheckBox* showIrregular, QWidget *parent = 0);
 
 public:
     DailyScheduleSPtr day();
 
 public slots:
     void paintEvent(QPaintEvent *);
+    void stateChanged();
+    void mouseMoveEvent(QMouseEvent *);
 
 private:
     DailyScheduleSPtr &day_;
+    QCheckBox* showRegular_;
+    QCheckBox* showIrregular_;
+    QVector<Event*> regularEvents_;
+    QVector<Event*> irregularEvents_;
+
+    QRect getEventRect(Event*) const;
 };
 
 

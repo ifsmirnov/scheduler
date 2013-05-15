@@ -1,6 +1,6 @@
 #include "addeventdialog.hpp"
 
-AddEventDialog::AddEventDialog(DailyScheduleSPtr day, QWidget *parent):
+AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
     QDialog(parent), day_(day)
 {
     setWindowTitle("Add Event");
