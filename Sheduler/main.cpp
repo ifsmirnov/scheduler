@@ -68,8 +68,10 @@ void testDayWidget() {
 
 void testWeekWidget() {
     Calendar* calendar = new Calendar();
-    Event* event = new IrregularEvent(QTime(12, 40), QTime(13, 10));
-    calendar->addIrregularEvent(QDate::currentDate(), event);
+    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
+    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
 
     WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
     weekWidget->show();
