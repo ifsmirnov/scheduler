@@ -17,6 +17,9 @@ public:
     virtual QVector<Event*> getEvents(QDate date);
     void addEvent(int dayOfWeek, Event *event);
 
+    virtual QDomElement serialize(QDomDocument &document);
+    static ScheduleManager *deserialize(QDomElement element);
+
 private:
     QVector<Event*> events[7];
 };
