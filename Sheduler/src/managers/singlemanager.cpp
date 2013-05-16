@@ -1,5 +1,7 @@
 #include "singlemanager.hpp"
 
+#include <iostream>
+
 using std::make_pair;
 
 SingleManager::SingleManager()
@@ -35,8 +37,8 @@ QDomElement SingleManager::serialize(QDomDocument &document)
     element.setAttribute("type", "single");
 
     for (auto i: events) {
-        QDomElement child = i.second.serialize(document);
-        child.setAttribute("date", i.first.toString("yyyy:mm:dd"));
+        QDomElement child = i.second->serialize(document);
+        child.setAttribute("date", i.first.toString("yyyy.mm.dd"));
         element.appendChild(child);
     }
 
@@ -45,5 +47,24 @@ QDomElement SingleManager::serialize(QDomDocument &document)
 
 ScheduleManager *SingleManager::deserialize(QDomElement element)
 {
-    // TODO
+    if (element.tagName() != "manager") {
+        std::cerr << "Not a manager" << std::endl;
+    }
+
+    if (!element.hasAttribute("type") || element.attribute("type") != "single") {
+        std::cerr << "Not a single manager" << std::endl;
+    }
+
+    SingleManager *manager = new SingleManager;
+
+    for (QDomElement child = element.firstChildElement("event");
+         !child.isNull();
+         child = child.nextSiblingElement("event")) {
+        // TODO existance check
+        QDate date = QDate::fromString(child.attribute("date"), "yyyy.mm.dd");
+        Event *event = Event::deserialize(child);
+        manager->addEvent(date, event);
+    }
+
+    return manager;
 }
