@@ -17,7 +17,7 @@ public:
 public:
     virtual QVector<Event*> getEvents(QDate date) = 0;
 
-    virtual QDomElement serialize(QDomDocument &document);
+    virtual QDomElement serialize(QDomDocument &document) = 0;
     static ScheduleManager *deserialize(QDomElement element);
 };
 
