@@ -48,9 +48,34 @@ int main(int argc, char* argv[]) {
     std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
 
     QVector<DailyScheduleSPtr> dailySchedules;
+<<<<<<< Updated upstream
     for (int i = 0; i < 6; ++i)
     {
         dailySchedules.push_back(schedule);
+=======
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);
+    dailySchedules.push_back(schedule);*/
+
+    /*WeekWidget* weekWidget = new WeekWidget(QDate(2013, 4, 27), dailySchedules);
+    weekWidget->show();*/
+
+}
+
+void testWeekWidget() {
+    Calendar* calendar = new Calendar();
+    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
+    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+
+    if (calendar->getManager()->getEvents(QDate::currentDate()).size() > 0) {
+        //exit(-1);
+>>>>>>> Stashed changes
     }
 
     WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);

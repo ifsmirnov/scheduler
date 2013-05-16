@@ -13,7 +13,7 @@
 #include <src/event.hpp>
 #include <gui/daywidget.hpp>
 
-class DayOfWeek : public QWidget
+class DayOfWeek : public QFrame
 {
     Q_OBJECT
 
