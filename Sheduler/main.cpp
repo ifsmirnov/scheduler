@@ -66,6 +66,15 @@ void testDayWidget() {
 
 }
 
+void testWeekWidget() {
+    Calendar* calendar = new Calendar();
+    Event* event = new IrregularEvent(QTime(12, 40), QTime(13, 10));
+    calendar->addIrregularEvent(QDate::currentDate(), event);
+
+    WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
+    weekWidget->show();
+}
+
 void testManagers()
 {
     CollectionManager *manager = new CollectionManager;
@@ -106,6 +115,7 @@ int main(int argc, char* argv[]) {
 
     //testManagers();
     testManagersWithGui();
+    testWeekWidget();
 
     return app.exec();
     //return 0;
