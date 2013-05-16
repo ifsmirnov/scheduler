@@ -71,7 +71,9 @@ class DayWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DayWidget(ScheduleManager *manager, QDate date, QWidget *parent = 0);
+    explicit DayWidget(ScheduleManager *manager,
+                       QDate date,
+                       QWidget *parent = 0);
 
 public:
 

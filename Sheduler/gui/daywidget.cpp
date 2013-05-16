@@ -223,7 +223,7 @@ QSize DayWidget::sizeHint() const {
 }
 
 void DayWidget::addEvent() {
-    AddEventDialog* eventDialog = new AddEventDialog(date_, this);
+    AddEventDialog* eventDialog = new AddEventDialog(date_, -1, this);
     connect(eventDialog, SIGNAL(addIrregularEvent(QDate,Event*)),
             this, SIGNAL(addIrregularEvent(QDate,Event*)));
     eventDialog->show();

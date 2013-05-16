@@ -18,7 +18,9 @@ class AddEventDialog: public QDialog
 {
     Q_OBJECT
 public:
-    explicit AddEventDialog(QDate date, QWidget *parent = 0);
+    explicit AddEventDialog(QDate date,
+                            int dayOfWeek = -1,
+                            QWidget *parent = 0);
 
 private:
     QLineEdit* hours_;
@@ -26,9 +28,11 @@ private:
     QLineEdit* duration_;
     QTextEdit* info_;
     QDate date_;
+    int dayOfWeek_;
 
 signals:
-    void addIrregularEvent(QDate date, Event *event);
+    void addIrregularEvent(QDate date, Event* event);
+    void addWeeklyEvent(int dayOfWeek, Event* event);
 
 private slots:
     void addEvent();
