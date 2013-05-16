@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QDomElement>
 #include <QDomDocument>
+#include <QMainWindow>
 
 #include <iostream>
 #include <cassert>
@@ -21,6 +22,7 @@
 #include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
 #include <gui/weekwidget.hpp>
+#include <gui/mainwindow.hpp>
 
 #include "src/managers/collectionmanager.hpp"
 #include "src/managers/schedulemanager.hpp"
@@ -104,9 +106,11 @@ void testManagersWithGui()
     dayWidget->show();
 }
 
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPalette pal = app.palette();
+    MainWindow mw;
 
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
     app.setPalette(pal);
@@ -115,7 +119,8 @@ int main(int argc, char* argv[]) {
 
     //testManagers();
     testManagersWithGui();
-    testWeekWidget();
+    //testWeekWidget();
+    mw.show();
 
     return app.exec();
     //return 0;

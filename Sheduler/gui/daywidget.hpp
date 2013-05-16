@@ -12,6 +12,7 @@
 #include <QToolTip>
 #include <QCheckBox>
 #include <QMouseEvent>
+#include <QAction>
 
 #include "src/managers/schedulemanager.hpp"
 #include "src/event.hpp"
@@ -36,11 +37,13 @@ public:
                                QCheckBox* showRegular,
                                QCheckBox* showIrregular,
                                QWidget *parent = 0);
+    void addDays(int days);
 
 public slots:
     void paintEvent(QPaintEvent *);
     void stateChanged();
     void mouseMoveEvent(QMouseEvent *);
+
 
 private:
     ScheduleManager *manager_;
@@ -49,6 +52,7 @@ private:
     QCheckBox* showIrregular_;
     QVector<Event*> regularEvents_;
     QVector<Event*> irregularEvents_;
+
 
     QRect getEventRect(Event*) const;
 };
@@ -78,14 +82,22 @@ public slots:
 signals:
     void addIrregularEvent(QDate date, Event *event);
     void addWeeklyEvent(int dayOfWeek, Event *event);
+    void dateChanged(QDate date);
 
 private:
     ScheduleManager *manager_;
     DayScheduleWidget* DayScheduleWidget_;
     QDate date_;
+    QLabel* title_;
+    QAction* nextDayAct_;
+    QAction* prevDayAct_;
+
+    void createActions();
 
 private slots:
     void addEvent();
+    void nextDay();
+    void prevDay();
 };
 
 #endif // DAYWIDGET_HPP

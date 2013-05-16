@@ -19,6 +19,11 @@ void DayScheduleWidget::stateChanged() {
     repaint();
 }
 
+
+void DayScheduleWidget::addDays(int days) {
+    date_ = date_.addDays(days);
+}
+
 QRect DayScheduleWidget::getEventRect(Event *event) const {
     int coeff = 60 * 60 * 24;
     int begin = (double)(QTime(0, 0).secsTo(event->begin())) / coeff * height();
@@ -97,7 +102,6 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
     }
 }
 
-
 void DayScheduleWidget::mouseMoveEvent(QMouseEvent* mouseEvent) {
     QToolTip::hideText();
     QString text = "";
@@ -130,13 +134,14 @@ void DayScheduleWidget::mouseMoveEvent(QMouseEvent* mouseEvent) {
 DayWidget::DayWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
     QWidget(parent), manager_(manager), date_(date)
 {
-    setWindowTitle(date.toString());
+    createActions();
+
     //entire window
     setWindowTitle(date.toString());
     QBoxLayout* dayWidgetLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-    QLabel* title = new QLabel(date.toString());
-    title->setAlignment(Qt::AlignCenter);
-    title->setFont(QFont("Courier", 15));
+    title_ = new QLabel(date.toString());
+    title_->setAlignment(Qt::AlignCenter);
+    title_->setFont(QFont("Courier", 15));
 
     //draw settings
     QHBoxLayout* drawSettLayout = new QHBoxLayout();
@@ -162,7 +167,7 @@ DayWidget::DayWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
     //buttons at the bottom of window
     QBoxLayout* menuLineLayout = new QBoxLayout(QBoxLayout::RightToLeft);
 
-    dayWidgetLayout->addWidget(title);
+    dayWidgetLayout->addWidget(title_);
     dayWidgetLayout->addLayout(drawSettLayout);
     dayWidgetLayout->addWidget(timeLineFrame);
     dayWidgetLayout->addLayout(menuLineLayout);
@@ -193,8 +198,25 @@ DayWidget::DayWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
     setLayout(dayWidgetLayout);
 }
 
-void DayWidget::paintEvent(QPaintEvent *) {
+
+void DayWidget::createActions() {
+    nextDayAct_ = new QAction(this);
+    nextDayAct_->setShortcut(Qt::Key_Right);
+    connect(nextDayAct_, SIGNAL(triggered()), this, SLOT(nextDay()));
+    addAction(nextDayAct_);
+
+    prevDayAct_ = new QAction(this);
+    prevDayAct_->setShortcut(Qt::Key_Left);
+    connect(prevDayAct_, SIGNAL(triggered()), this, SLOT(prevDay()));
+    addAction(prevDayAct_);
 }
+
+
+void DayWidget::paintEvent(QPaintEvent *) {
+    setWindowTitle(date_.toString());
+    title_->setText(date_.toString());
+}
+
 
 QSize DayWidget::sizeHint() const {
     return QSize(240, 600);
@@ -206,4 +228,18 @@ void DayWidget::addEvent() {
             this, SIGNAL(addIrregularEvent(QDate,Event*)));
     eventDialog->show();
     update();
+}
+
+void DayWidget::nextDay() {
+    date_ = date_.addDays(1);
+    DayScheduleWidget_->addDays(1);
+    repaint();
+    dateChanged(date_);
+}
+
+void DayWidget::prevDay() {
+    date_ = date_.addDays(-1);
+    DayScheduleWidget_->addDays(-1);
+    repaint();
+    dateChanged(date_);
 }
