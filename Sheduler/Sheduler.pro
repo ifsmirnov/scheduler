@@ -16,7 +16,8 @@ SOURCES += \
     src/managers/schedulemanager.cpp \
     src/managers/singlemanager.cpp \
     src/managers/weekmanager.cpp \
-    src/managers/collectionmanager.cpp
+    src/managers/collectionmanager.cpp \
+    gui/eventslist.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -35,7 +36,8 @@ HEADERS += \
     src/managers/schedulemanager.hpp \
     src/managers/singlemanager.hpp \
     src/managers/weekmanager.hpp \
-    src/managers/collectionmanager.hpp
+    src/managers/collectionmanager.hpp \
+    gui/eventslist.hpp
 
 INCLUDEPATH += DEPENDPATH
 

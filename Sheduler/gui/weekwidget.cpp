@@ -98,13 +98,13 @@ DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
         for (int eventIndex = 0; eventIndex < events.size(); ++eventIndex)
         {
             Event* event = events[eventIndex];
-            QLabel* noEventLabel = new QLabel(event->info() + " (" + event->begin().toString() + ")");// + " - " + event->end().toString() + ")"
-            noEventLabel->setAlignment(Qt::AlignCenter);
-            QSizePolicy policy = noEventLabel->sizePolicy();
+            QLabel* eventLabel = new QLabel(event->info() + " (" + event->begin().toString() + ")");// + " - " + event->end().toString() + ")"
+            eventLabel->setAlignment(Qt::AlignCenter);
+            QSizePolicy policy = eventLabel->sizePolicy();
             policy.setVerticalStretch(1);
             policy.setHorizontalStretch(1);
-            noEventLabel->setSizePolicy(policy);
-            layout()->addWidget(noEventLabel);
+            eventLabel->setSizePolicy(policy);
+            layout()->addWidget(eventLabel);
 
             if (eventIndex + 1 < events.size())
             {

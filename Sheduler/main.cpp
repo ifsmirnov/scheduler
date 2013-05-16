@@ -21,6 +21,7 @@
 #include <gui/addeventdialog.hpp>
 #include <gui/daywidget.hpp>
 #include <gui/weekwidget.hpp>
+#include <gui/eventslist.hpp>
 
 #include "src/managers/collectionmanager.hpp"
 #include "src/managers/schedulemanager.hpp"
@@ -66,7 +67,7 @@ void testDayWidget() {
 
 }
 
-void testWeekWidget() {
+void testWeekWidgetAndEventsList() {
     Calendar* calendar = new Calendar();
     Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
     Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
@@ -75,6 +76,9 @@ void testWeekWidget() {
 
     WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
     weekWidget->show();
+
+    EventsList* eventsList = new EventsList(QDate::currentDate(), QDate::currentDate(), calendar->getManager());
+    eventsList->show();
 }
 
 void testManagers()
@@ -117,7 +121,7 @@ int main(int argc, char* argv[]) {
 
     //testManagers();
     testManagersWithGui();
-    testWeekWidget();
+    testWeekWidgetAndEventsList();
 
     return app.exec();
     //return 0;
