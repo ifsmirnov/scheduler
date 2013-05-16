@@ -18,15 +18,16 @@ class DayOfWeek : public QFrame
     Q_OBJECT
 
 private:
-    DailyScheduleSPtr dailySchedule;
+    ScheduleManager* manager;
+    QDate day;
 
 public:
-    DayOfWeek(DailyScheduleSPtr dailySchedule, QWidget *parent = 0);
+    DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent = 0);
 
 signals:
 
 public slots:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent* event);
     QSize sizeHint() const;
 
 };
@@ -36,19 +37,19 @@ class WeekWidget : public QWidget
     Q_OBJECT
 
 private:
-    QVector<DailyScheduleSPtr> dailySchedules;
+    ScheduleManager* manager;
     QHBoxLayout* layout;
-    QVector<DayOfWeek*> dayFrames;
-    QVector<QFrame*> frames;
+    QVector<DayOfWeek*> dayOfWeekFrames;
+    QVector<QFrame*> dayFrames;
     QDate firstDay;
 
 public:
-    WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules, QWidget *parent = 0);
+    WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent = 0);
 
 signals:
     
 public slots:
-    void paintEvent(QPaintEvent *);    
+    void paintEvent(QPaintEvent* event);
     
 };
 

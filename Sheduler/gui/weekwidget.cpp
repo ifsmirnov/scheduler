@@ -2,22 +2,22 @@
 
 #include <cstdlib>
 
-WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules, QWidget *parent) :
-    QWidget(parent), dailySchedules(dailySchedules), firstDay(firstDay)
+WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent) :
+    QWidget(parent), manager(manager), firstDay(firstDay)
 {
     QDate day = firstDay;
     layout = new QHBoxLayout(this);
-    for (int index = 0; index < dailySchedules.size(); ++index, day = day.addDays(1))
+    for (int dayNumber = 0; dayNumber < 7; ++dayNumber, day = day.addDays(1))
     {
-        QFrame* frame;
+        QFrame* dayFrame;
         QVBoxLayout* frameLayout;
         QLabel* dateLabel;
         QFrame* separator;
-        DayOfWeek* dayFrame;
+        DayOfWeek* dayOfWeekFrame;
         QSizePolicy policy;
 
-        frame = new QFrame();
-        frame->setFrameStyle(QFrame::Box);
+        dayFrame = new QFrame();
+        dayFrame->setFrameStyle(QFrame::Box);
         if (day.dayOfWeek() >= 6)
         {
             dayFrame->setStyleSheet("QFrame { background-color: #c3a253; padding: 1; }");
@@ -29,7 +29,7 @@ WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules
         dayFrame->setMinimumWidth(150);
         dayFrames.push_back(dayFrame);
 
-        frameLayout = new QVBoxLayout(frame);
+        frameLayout = new QVBoxLayout(dayFrame);
 
         dateLabel = new QLabel(day.toString());
         dateLabel->setAlignment(Qt::AlignHCenter);
@@ -41,8 +41,8 @@ WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules
         separator = new QFrame();
         separator->setFrameStyle(QFrame::HLine);
 
-        dayFrame = new DayOfWeek(dailySchedules[index]);
-        policy = dayFrame->sizePolicy();
+        dayOfWeekFrame = new DayOfWeek(day, manager);
+        policy = dayOfWeekFrame->sizePolicy();
         policy.setVerticalStretch(1);
         policy.setHorizontalStretch(1);
         dayOfWeekFrame->setSizePolicy(policy);
@@ -50,9 +50,9 @@ WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules
 
         frameLayout->addWidget(dateLabel);
         frameLayout->addWidget(separator);
-        frameLayout->addWidget(dayFrame);
+        frameLayout->addWidget(dayOfWeekFrame);
 
-        layout->addWidget(frame);
+        layout->addWidget(dayFrame);
     }
 
     setMinimumSize(400, 300);
@@ -61,7 +61,7 @@ WeekWidget::WeekWidget(QDate firstDay, QVector<DailyScheduleSPtr> dailySchedules
 void WeekWidget::paintEvent(QPaintEvent* event)
 {
     std::cerr << "paintEvent " << rand() << std::endl;
-    for (auto frame : frames)
+    for (auto frame : dayFrames)
     {
         if (frame->underMouse())
         {

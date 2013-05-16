@@ -9,37 +9,44 @@ using calendar_containers::GlobalContainer;
 Calendar::Calendar(QObject *parent) :
     QObject(parent)
 {
-    container = new GlobalContainer;
+    manager = new CollectionManager;
+    singleManager = new SingleManager;
+    weekManager = new WeekManager;
+    manager->addChildManager(singleManager);
+    manager->addChildManager(weekManager);
 }
 Calendar::~Calendar()
 {
-    delete container;
+    delete manager;
 }
 
-void Calendar::setSchedule(QDate date, DailyScheduleSPtr schedule)
+void Calendar::addIrregularEvent(QDate date, Event *event)
 {
-    container->setSchedule(date, schedule);
+    singleManager->addEvent(date, event);
 }
 
-QVector<DailyScheduleSPtr> Calendar::getDaysInRange(QDate begin, QDate end)
+void Calendar::addWeeklyEvent(int dayOfWeek, Event *event)
 {
-    QVector<DailyScheduleSPtr> result;
-    container->getDaysInRange(begin, end, result);
-    return result;
+    weekManager->addEvent(dayOfWeek, event);
+}
+
+ScheduleManager *Calendar::getManager() const
+{
+    return manager;
 }
 
 QDomElement Calendar::serialize(QDomDocument &document) const
 {
-    QDomElement element = document.createElement("calendar");
+    /*QDomElement element = document.createElement("calendar");
 
     element.appendChild(container->serialize(document));
 
-    return element;
+    return element;*/
 }
 
 Calendar *Calendar::deserialize(QDomElement element)
 {
-    if (element.tagName() != "calendar") {
+    /*if (element.tagName() != "calendar") {
         std::cerr << "Not a calendar" << std::endl;
     }
 
@@ -49,7 +56,7 @@ Calendar *Calendar::deserialize(QDomElement element)
     QDomElement child = element.firstChildElement("container");
     calendar->container = GlobalContainer::deserialize(child);
 
-    return calendar;
+    return calendar;*/
+    return nullptr;
 }
-
 
