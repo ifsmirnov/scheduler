@@ -88,7 +88,4 @@ private slots:
     void addEvent();
 };
 
-
-
-
 #endif // DAYWIDGET_HPP

@@ -207,4 +207,3 @@ void DayWidget::addEvent() {
     eventDialog->show();
     update();
 }
-
