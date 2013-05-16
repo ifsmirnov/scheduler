@@ -5,9 +5,11 @@
 #include <QDomDocument>
 
 #include <iostream>
+#include <cassert>
 #include <stdexcept>
 
 #include <QDate>
+#include <QFile>
 
 #include <src/event.hpp>
 #include <src/regularevent.hpp>
@@ -20,39 +22,37 @@
 #include <gui/daywidget.hpp>
 #include <gui/weekwidget.hpp>
 
-int main(int argc, char* argv[]) {
-    QApplication app(argc, argv);
-    QPalette pal = app.palette();
+#include "src/managers/collectionmanager.hpp"
+#include "src/managers/schedulemanager.hpp"
+#include "src/managers/singlemanager.hpp"
+#include "src/managers/weekmanager.hpp"
 
-    pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
-    app.setPalette(pal);
 
-    Calendar *calendar = new Calendar;
+void testDayWidget() {
+
+
+    /*Calendar *calendar = new Calendar;
     QDate begin(2001, 03, 14);
     QDate end(2002, 03, 14);
 
     DailyScheduleSPtr schedule(new DailySchedule);
 
-    schedule->addEvent(new RegularEvent(QTime::currentTime(), 1000));
+    schedule->addEvent(new RegularEvent(QTime(1, 0), 3000, "YAHOO!"));
+    schedule->addEvent(new IrregularEvent(QTime(1, 30), 60 * 90, "YAHOOHOO!"));
     //schedule->addEvent(new IrregularEvent(QTime::currentTime(), 40));
 
     for (QDate t = begin; t <= end; t = t.addDays(1)) {
         calendar->setSchedule(t, schedule->clone());
     }
 
-    //std::cerr << DailySchedule::count << std::endl;
-    //std::cerr << Event::count << std::endl;
-
-    //std::cerr << calendar->getDaysInRange(QDate(2001, 02, 01), QDate(2002, 03, 13)).size() << std::endl;
-
     std::cerr << calendar->getDaysInRange(QDate(2000, 1, 1), QDate(2010, 1, 1)).size() << std::endl;
 
+
+    DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
+    //dayWidget->setStyleSheet("QPushButton {  color: white; background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);}");
+    dayWidget->show();
+
     QVector<DailyScheduleSPtr> dailySchedules;
-<<<<<<< Updated upstream
-    for (int i = 0; i < 6; ++i)
-    {
-        dailySchedules.push_back(schedule);
-=======
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
@@ -68,26 +68,55 @@ int main(int argc, char* argv[]) {
 
 void testWeekWidget() {
     Calendar* calendar = new Calendar();
-    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
-    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
-    calendar->addIrregularEvent(QDate::currentDate(), event1);
-    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    Event* event = new IrregularEvent(QTime(12, 40), QTime(13, 10));
+    calendar->addIrregularEvent(QDate::currentDate(), event);
 
-    if (calendar->getManager()->getEvents(QDate::currentDate()).size() > 0) {
-        //exit(-1);
->>>>>>> Stashed changes
-    }
-
-    WeekWidget* weekWidget = new WeekWidget(begin, dailySchedules);
+    WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
     weekWidget->show();
-    //schedule.reset();
+}
 
-    //std::cerr << DailySchedule::count << std::endl;
-    //std::cerr << Event::count << std::endl;
-    //std::cerr << schedule->events().size() << std::endl;
+void testManagers()
+{
+    CollectionManager *manager = new CollectionManager;
+    SingleManager *singleManager = new SingleManager;
+    WeekManager *weekManager = new WeekManager;
+    manager->addChildManager(singleManager);
+    manager->addChildManager(weekManager);
 
-    DayWidget* dayWidget = new DayWidget(schedule, QDate(2001, 02, 01));
-    //dayWidget->show();
+    //singleManager->addEvent(new RegularEvent(QTime::currentTime(), 10, "Hello"), QDate(2013, 04, 19));
+    //weekManager->addEvent(new IrregularEvent(QTime::currentTime(), 20, "world!"), 4);
+
+    std::cerr << manager->getEvents(QDate(2013, 04, 12)).size() << std::endl;
+    std::cerr << "Events count: " << Event::count << std::endl;
+
+    delete manager;
+
+    std::cerr << "Events count: " << Event::count << std::endl;
+}
+
+void testManagersWithGui()
+{
+    QDate date = QDate::currentDate();
+    Calendar *calendar = new Calendar;
+    DayWidget *dayWidget = new DayWidget(calendar->getManager(), date);
+    QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                     calendar, SLOT(addIrregularEvent(QDate,Event*)));
+    dayWidget->show();
+}
+
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+    QPalette pal = app.palette();
+
+    pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
+    app.setPalette(pal);
+
+    //testDayWidget();
+
+    //testManagers();
+    testManagersWithGui();
+    testWeekWidget();
 
     return app.exec();
+    //return 0;
 }
