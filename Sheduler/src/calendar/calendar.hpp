@@ -20,6 +20,7 @@ class Calendar : public QObject
     Q_OBJECT
 public:
     explicit Calendar(QObject *parent = 0);
+    Calendar(SingleManager *singleManager, WeekManager *weekManager, QObject *parent = 0);
     ~Calendar();
     
 public slots:
