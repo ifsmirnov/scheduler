@@ -64,7 +64,7 @@ void AddEventDialog::addEvent() {
         event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
         event->setDuration(duration_->text().toInt() * 60);
         event->setInfo(info_->toPlainText());
-        if (date_.isNull()) {
+        if (!date_.isNull()) {
             emit addIrregularEvent(date_, event);
         } else {
             emit addWeeklyEvent(dayOfWeek_, event);
