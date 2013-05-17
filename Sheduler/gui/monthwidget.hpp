@@ -15,12 +15,22 @@ public:
     DayOfMonth(const DayOfMonth& dayOfMonth);
     DayOfMonth operator=(const DayOfMonth& dayOfMonth);
 
+    bool getCovered() const;
+    void setCovered(bool value);
+
 public slots:
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+
+signals:
+    void dayPressed(int);
+    void dayCovered(int);
 
 private:
     ScheduleManager *manager;
     QDate date;
+    bool covered;
 };
 
 class MonthWidget : public QWidget
@@ -32,16 +42,21 @@ public:
                          QWidget *parent = 0);
     ~MonthWidget();
     
-signals:
-    
 public slots:
     void setHighlight(QDate date);
     void noHighlight();
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *);
+
+    void dayPressed(int day);
+    void dayCovered(int day);
 
 public:
 
 private:
     int curYear, curMonth, curDay;
+    int coveredDay;
     ScheduleManager *manager;
     
     QVector<DayOfMonth*> days;
