@@ -23,6 +23,7 @@
 #include <gui/daywidget.hpp>
 #include <gui/weekwidget.hpp>
 #include <gui/mainwindow.hpp>
+#include <gui/eventslist.hpp>
 
 #include "src/managers/collectionmanager.hpp"
 #include "src/managers/schedulemanager.hpp"
@@ -68,13 +69,20 @@ void testDayWidget() {
 
 }
 
-void testWeekWidget() {
+void testWeekWidgetAndEventsList() {
     Calendar* calendar = new Calendar();
-    Event* event = new IrregularEvent(QTime(12, 40), QTime(13, 10));
-    calendar->addIrregularEvent(QDate::currentDate(), event);
+    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
+    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+
 
     WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
+    QObject::connect(weekWidget, SIGNAL(addWeeklyWidget(int,Event*)), calendar, SLOT(addWeeklyEvent(int,Event*)));
     weekWidget->show();
+
+    EventsList* eventsList = new EventsList(QDate::currentDate(), QDate::currentDate(), calendar->getManager());
+    eventsList->show();
 }
 
 void testManagers()
@@ -121,6 +129,8 @@ int main(int argc, char* argv[]) {
     //testManagersWithGui();
     //testWeekWidget();
     mw.show();
+    testManagersWithGui();
+    testWeekWidgetAndEventsList();
 
     return app.exec();
     //return 0;

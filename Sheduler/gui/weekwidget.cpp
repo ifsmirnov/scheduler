@@ -20,12 +20,13 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
         dayFrame->setFrameStyle(QFrame::Box);
         if (day.dayOfWeek() >= 6)
         {
-            dayFrame->setStyleSheet("QFrame { background-color: #c3a253; }");
+            dayFrame->setStyleSheet("QFrame { background-color: #c3a253; padding: 1; }");
         }
         else
         {
-            dayFrame->setStyleSheet("QFrame { background-color: #efd334; }");
+            dayFrame->setStyleSheet("QFrame { background-color: #efd334; padding: 1; }");
         }
+        dayFrame->setMinimumWidth(150);
         dayFrames.push_back(dayFrame);
 
         frameLayout = new QVBoxLayout(dayFrame);
@@ -43,6 +44,7 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
         dayOfWeekFrame = new DayOfWeek(day, manager);
         policy = dayOfWeekFrame->sizePolicy();
         policy.setVerticalStretch(1);
+        policy.setHorizontalStretch(1);
         dayOfWeekFrame->setSizePolicy(policy);
         dayOfWeekFrames.push_back(dayOfWeekFrame);
 
@@ -72,46 +74,67 @@ void WeekWidget::paintEvent(QPaintEvent* event)
     }
 }
 
-DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
-    QWidget(parent), manager(manager)
+void WeekWidget::callAddEventDialog(int dayOfWeek)
 {
-    setMinimumWidth(100);
+    AddEventDialog* addEventDialog = new AddEventDialog(QDate(), dayOfWeek, this);
+    connect(addEventDialog, SIGNAL(addWeeklyWidget(int, event*)), this, SIGNAL(addWeeklyWidget(int, event*)));
+    addEventDialog->show();
+}
+
+DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
+    QFrame(parent), manager(manager), day(day)
+{
+    setStyleSheet("QFrame { background-color: #ffffff; padding: 1; margin: 1; }");
+    setFrameStyle(QFrame::Plain);
+
+    setLayout(new QVBoxLayout(this));
+
+    if (manager->getEvents(day).size() == 0)
+    {
+        QLabel* noEventLabel = new QLabel("No events");
+        noEventLabel->setAlignment(Qt::AlignCenter);
+        QSizePolicy policy = noEventLabel->sizePolicy();
+        policy.setVerticalStretch(1);
+        policy.setHorizontalStretch(1);
+        noEventLabel->setSizePolicy(policy);
+        layout()->addWidget(noEventLabel);
+    }
+    else
+    {
+        QVector<Event*> events = manager->getEvents(day);
+        for (int eventIndex = 0; eventIndex < events.size(); ++eventIndex)
+        {
+            Event* event = events[eventIndex];
+            QLabel* eventLabel = new QLabel(event->info() + " (" + event->begin().toString() + ")");// + " - " + event->end().toString() + ")"
+            eventLabel->setAlignment(Qt::AlignCenter);
+            QSizePolicy policy = eventLabel->sizePolicy();
+            policy.setVerticalStretch(1);
+            policy.setHorizontalStretch(1);
+            eventLabel->setSizePolicy(policy);
+            layout()->addWidget(eventLabel);
+
+            if (eventIndex + 1 < events.size())
+            {
+                QFrame* separator = new QFrame();
+                separator->setFrameStyle(QFrame::HLine);
+                layout()->addWidget(separator);
+            }
+        }
+    }
+}
+
+void DayOfWeek::mousePressEvent(QMouseEvent* event)
+{
+    WeekWidget* parent = (WeekWidget*)this->parent();
+    parent->callAddEventDialog(day.dayOfWeek() - 1);
 }
 
 void DayOfWeek::paintEvent(QPaintEvent* event)
 {
-    QPainter painter(this);
-
-    painter.setBrush(Qt::white);
-    painter.setPen(Qt::black);
-
-    int w = width() - 1;
-    int h = height() - 1;
-
-    painter.drawRect(0, 0, w, h);
-    double secsInDay = 24 * 60 * 60;
-
-    painter.setBrush(QBrush(QColor(180, 180, 180)));
-    QVector<Event*> events = manager->getEvents(day);
-    QVector<int> eventsYPositions;
-    if (events.size() > 0)
-    {
-        for (int eventIndex = 0; eventIndex <= events.size(); ++eventIndex)
-        {
-            eventsYPositions.push_back((eventIndex * h) / events.size());
-        }
-    }
-
-    for (int eventIndex = 0; eventIndex < events.size(); ++eventIndex)
-    {
-        int eventY = eventsYPositions[eventIndex];
-        int eventHeight = eventsYPositions[eventIndex + 1] - eventY;
-
-        painter.drawRect(0, eventY, w, eventHeight);
-    }
 }
 
 QSize DayOfWeek::sizeHint() const
 {
-    return QSize(100, 240);
+    return QWidget::sizeHint();
+    //return QSize(100, 240);
 }

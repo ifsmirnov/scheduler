@@ -17,7 +17,8 @@ SOURCES += \
     src/managers/singlemanager.cpp \
     src/managers/weekmanager.cpp \
     src/managers/collectionmanager.cpp \
-    gui/mainwindow.cpp
+    gui/mainwindow.cpp \
+    gui/eventslist.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -37,7 +38,8 @@ HEADERS += \
     src/managers/singlemanager.hpp \
     src/managers/weekmanager.hpp \
     src/managers/collectionmanager.hpp \
-    gui/mainwindow.hpp
+    gui/mainwindow.hpp \
+    gui/eventslist.hpp
 
 INCLUDEPATH += DEPENDPATH
 
