@@ -74,6 +74,18 @@ void WeekWidget::paintEvent(QPaintEvent* event)
     }
 }
 
+void WeekWidget::callAddEventDialog(int dayOfWeek)
+{
+    /*AddEventDialog* addEventDialog = new AddEventDialog(NULL, dayOfWeek, this);
+    connect(addEventDialog, SIGNAL(addWeeklyWidget(int, event*)), this, SLOT(addWeeklyWidget(int, event*));
+    addEventDialog->show();*/
+}
+
+void WeekWidget::addWeeklyWidget(int dayOfWeek, Event* event)
+{
+
+}
+
 DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
     QFrame(parent), manager(manager), day(day)
 {
@@ -114,6 +126,12 @@ DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
             }
         }
     }
+}
+
+void DayOfWeek::mousePressEvent(QMouseEvent* event)
+{
+    WeekWidget* parent = (WeekWidget*)this->parent();
+    parent->callAddEventDialog(day.dayOfWeek() - 1);
 }
 
 void DayOfWeek::paintEvent(QPaintEvent* event)

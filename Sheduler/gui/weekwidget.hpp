@@ -17,6 +17,9 @@ class DayOfWeek : public QFrame
 {
     Q_OBJECT
 
+protected:
+    void mousePressEvent(QMouseEvent* event);
+
 private:
     ScheduleManager* manager;
     QDate day;
@@ -36,6 +39,8 @@ class WeekWidget : public QWidget
 {
     Q_OBJECT
 
+protected:
+
 private:
     ScheduleManager* manager;
     QHBoxLayout* layout;
@@ -44,11 +49,13 @@ private:
     QDate firstDay;
 
 public:
+    void callAddEventDialog(int dayOfWeek);
     WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent = 0);
 
 signals:
     
 public slots:
+    void addWeeklyWidget(int dayOfWeek, Event* event);
     void paintEvent(QPaintEvent* event);
     
 };
