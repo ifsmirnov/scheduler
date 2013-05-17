@@ -79,12 +79,14 @@ public:
 
 public slots:
     void paintEvent(QPaintEvent *);
+    void closeEvent(QCloseEvent *);
     QSize sizeHint() const;
 
 signals:
     void addIrregularEvent(QDate date, Event *event);
     void addWeeklyEvent(int dayOfWeek, Event *event);
     void dateChanged(QDate date);
+    void closed();
 
 private:
     ScheduleManager *manager_;

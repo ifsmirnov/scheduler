@@ -217,6 +217,12 @@ void DayWidget::paintEvent(QPaintEvent *) {
     title_->setText(date_.toString());
 }
 
+void DayWidget::closeEvent(QCloseEvent *event)
+{
+    emit closed();
+    QWidget::closeEvent(event);
+}
+
 
 QSize DayWidget::sizeHint() const {
     return QSize(240, 600);
