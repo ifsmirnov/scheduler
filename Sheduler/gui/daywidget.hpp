@@ -8,8 +8,13 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QDate>
+#include <QFrame>
+#include <QToolTip>
+#include <QCheckBox>
+#include <QMouseEvent>
+#include <QAction>
 
-#include "src/dailyschedule.hpp"
+#include "src/managers/schedulemanager.hpp"
 #include "src/event.hpp"
 #include "gui/addeventdialog.hpp"
 
@@ -27,16 +32,29 @@ class DayScheduleWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DayScheduleWidget(DailyScheduleSPtr &day, QWidget *parent = 0);
-
-public:
-    DailyScheduleSPtr day();
+    explicit DayScheduleWidget(ScheduleManager *manager,
+                               QDate date_,
+                               QCheckBox* showRegular,
+                               QCheckBox* showIrregular,
+                               QWidget *parent = 0);
+    void addDays(int days);
 
 public slots:
     void paintEvent(QPaintEvent *);
+    void stateChanged();
+    void mouseMoveEvent(QMouseEvent *);
+
 
 private:
-    DailyScheduleSPtr &day_;
+    ScheduleManager *manager_;
+    QDate date_;
+    QCheckBox* showRegular_;
+    QCheckBox* showIrregular_;
+    QVector<Event*> regularEvents_;
+    QVector<Event*> irregularEvents_;
+
+
+    QRect getEventRect(Event*) const;
 };
 
 
@@ -53,28 +71,35 @@ class DayWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DayWidget(DailyScheduleSPtr day, QDate date, QWidget *parent = 0);
+    explicit DayWidget(ScheduleManager *manager,
+                       QDate date,
+                       QWidget *parent = 0);
 
 public:
-    DailyScheduleSPtr day();
 
 public slots:
     void paintEvent(QPaintEvent *);
     QSize sizeHint() const;
 
+signals:
+    void addIrregularEvent(QDate date, Event *event);
+    void addWeeklyEvent(int dayOfWeek, Event *event);
+    void dateChanged(QDate date);
+
 private:
-    DailyScheduleSPtr day_; // pointer is constant, the value is not
-    /* I don't know if we may want to change the pointed value
-     * while it is displayed. If we want, the signal-slot
-     * mapping should be implemented, Day should be Q_OBJECT
-     * etc. I haven't decided if we want it yet. */
+    ScheduleManager *manager_;
     DayScheduleWidget* DayScheduleWidget_;
+    QDate date_;
+    QLabel* title_;
+    QAction* nextDayAct_;
+    QAction* prevDayAct_;
+
+    void createActions();
 
 private slots:
     void addEvent();
+    void nextDay();
+    void prevDay();
 };
-
-
-
 
 #endif // DAYWIDGET_HPP

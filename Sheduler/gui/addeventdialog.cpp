@@ -1,10 +1,9 @@
 #include "addeventdialog.hpp"
 
-AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
-    QDialog(parent), day_(day)
+AddEventDialog::AddEventDialog(QDate date, int dayOfWeek, QWidget *parent):
+    QDialog(parent), date_(date), dayOfWeek_(dayOfWeek)
 {
     setWindowTitle("Add Event");
-
     //the entire dialog
     QBoxLayout* eventDialogLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 
@@ -28,7 +27,10 @@ AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
     minutes_ = new QLineEdit();
 
     hours_->setValidator(new QIntValidator(0, 23, this));
+    hours_->setMaxLength(2);
     minutes_->setValidator(new QIntValidator(0, 59, this));
+    hours_->setMaxLength(2);
+    minutes_->setMaxLength(2);
 
     eventStartLayout->addWidget(startLabel, 1);
     eventStartLayout->addWidget(hours_);
@@ -52,11 +54,23 @@ AddEventDialog::AddEventDialog(DailyScheduleSPtr &day, QWidget *parent):
 }
 
 void AddEventDialog::addEvent() {
-    Event* event = new IrregularEvent();
-    event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
-    event->setDuration(duration_->text().toInt() * 60);
-    event->setInfo(info_->toPlainText());
-    day_ = day_->clone();
-    day_->addEvent(event);
-    close();
+    Event* event;
+    if (date_.isNull()) {
+        event = new IrregularEvent();
+    } else {
+        event = new RegularEvent();
+    }
+    try {
+        event->setBegin(QTime(hours_->text().toInt(), minutes_->text().toInt()));
+        event->setDuration(duration_->text().toInt() * 60);
+        event->setInfo(info_->toPlainText());
+        if (date_.isNull()) {
+            emit addIrregularEvent(date_, event);
+        } else {
+            emit addWeeklyEvent(dayOfWeek_, event);
+        }
+        close();
+    } catch(std::invalid_argument ex) {
+        delete event;
+    }
 }

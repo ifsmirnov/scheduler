@@ -9,10 +9,11 @@
 #include <QDomElement>
 #include <QDomDocument>
 
-#include "container.hpp"
 #include "src/dailyschedule.hpp"
-
-using calendar_containers::Container;
+#include "src/managers/schedulemanager.hpp"
+#include "src/managers/collectionmanager.hpp"
+#include "src/managers/singlemanager.hpp"
+#include "src/managers/weekmanager.hpp"
 
 class Calendar : public QObject
 {
@@ -22,15 +23,18 @@ public:
     ~Calendar();
     
 public slots:
-    void setSchedule(QDate date, DailyScheduleSPtr schedule);
-    QVector<DailyScheduleSPtr> getDaysInRange(QDate begin, QDate end);
+    void addIrregularEvent(QDate date, Event *event);
+    void addWeeklyEvent(int dayOfWeek, Event *event);
 
 public:
+    ScheduleManager* getManager() const;
     QDomElement serialize(QDomDocument &document) const;
     static Calendar *deserialize(QDomElement element);
     
 private:
-    Container *container;
+    CollectionManager *manager;
+    SingleManager *singleManager;
+    WeekManager *weekManager;
     
 };
 
