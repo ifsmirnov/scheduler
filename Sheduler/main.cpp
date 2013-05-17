@@ -74,7 +74,9 @@ void testWeekWidgetAndEventsList() {
     calendar->addIrregularEvent(QDate::currentDate(), event1);
     calendar->addIrregularEvent(QDate::currentDate(), event2);
 
+
     WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
+    QObject::connect(weekWidget, SIGNAL(addWeeklyWidget(int,Event*)), calendar, SLOT(addWeeklyEvent(int,Event*)));
     weekWidget->show();
 
     EventsList* eventsList = new EventsList(QDate::currentDate(), QDate::currentDate(), calendar->getManager());

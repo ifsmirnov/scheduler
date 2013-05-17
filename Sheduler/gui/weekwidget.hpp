@@ -53,9 +53,9 @@ public:
     WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent = 0);
 
 signals:
+    void addWeeklyWidget(int dayOfWeek, Event* event);
     
 public slots:
-    void addWeeklyWidget(int dayOfWeek, Event* event);
     void paintEvent(QPaintEvent* event);
     
 };

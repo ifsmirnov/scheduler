@@ -76,14 +76,9 @@ void WeekWidget::paintEvent(QPaintEvent* event)
 
 void WeekWidget::callAddEventDialog(int dayOfWeek)
 {
-    /*AddEventDialog* addEventDialog = new AddEventDialog(NULL, dayOfWeek, this);
-    connect(addEventDialog, SIGNAL(addWeeklyWidget(int, event*)), this, SLOT(addWeeklyWidget(int, event*));
-    addEventDialog->show();*/
-}
-
-void WeekWidget::addWeeklyWidget(int dayOfWeek, Event* event)
-{
-
+    AddEventDialog* addEventDialog = new AddEventDialog(QDate(), dayOfWeek, this);
+    connect(addEventDialog, SIGNAL(addWeeklyWidget(int, event*)), this, SIGNAL(addWeeklyWidget(int, event*)));
+    addEventDialog->show();
 }
 
 DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
