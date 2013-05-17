@@ -5,13 +5,12 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-CalendarWidget::CalendarWidget(QDate date, ScheduleManager *manager, QWidget *parent) :
-    QWidget(parent), manager(manager), dayWidget(nullptr)
+CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) :
+    QWidget(parent), calendar(calendar), dayWidget(nullptr)
 {
     std::cerr << "CW created" << std::endl;
     setHighlight(date);
     noHighlight();
-
 }
 
 CalendarWidget::~CalendarWidget()
@@ -21,7 +20,6 @@ CalendarWidget::~CalendarWidget()
 
 void CalendarWidget::paintEvent(QPaintEvent *)
 {
-    std::cerr << "Paint event" << std::endl;
     QPainter painter(this);
 
     if (hasHighlight()) {
@@ -42,9 +40,13 @@ void CalendarWidget::mousePressEvent(QMouseEvent *event)
         else {
             setHighlight(QDate::currentDate());
 
-            dayWidget = new DayWidget(manager, QDate::currentDate());
+            dayWidget = new DayWidget(calendar->getManager(), QDate::currentDate());
+            connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                    calendar, SLOT(addIrregularEvent(QDate,Event*)));
             connect(dayWidget, SIGNAL(dateChanged(QDate)),
                     this, SLOT(setHighlight(QDate)));
+            connect(dayWidget, SIGNAL(closed()),
+                    this, SLOT(noHighlight()));
 
             dayWidget->show();
             std::cerr << "Created dw" << std::endl;

@@ -11,7 +11,7 @@ class CalendarWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CalendarWidget(QDate date, ScheduleManager *manager, QWidget *parent = 0);
+    explicit CalendarWidget(QDate date, Calendar *calendar, QWidget *parent = 0);
     ~CalendarWidget();
     
 signals:
@@ -31,7 +31,6 @@ private:
     Calendar *calendar;
     int curYear, curMonth, curDay;
 
-    ScheduleManager *manager;
     DayWidget *dayWidget;
     
 };

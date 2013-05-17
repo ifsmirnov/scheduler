@@ -117,7 +117,8 @@ void testManagersWithGui()
     QDomDocument document;
     document.setContent(&file);
 
-    Calendar *calendar = Calendar::deserialize(document.firstChildElement("calendar"));
+    //Calendar *calendar = Calendar::deserialize(document.firstChildElement("calendar"));
+    Calendar *calendar = new Calendar;
 
     DayWidget *dayWidget = new DayWidget(calendar->getManager(), date);
     QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
@@ -133,7 +134,8 @@ void testManagersWithGui()
 void testCalendarWidget()
 {
     QDate date = QDate::currentDate();
-    CalendarWidget *calendarWidget = new CalendarWidget(date, new CollectionManager);
+    Calendar *calendar = new Calendar;
+    CalendarWidget *calendarWidget = new CalendarWidget(date, calendar);
     calendarWidget->show();
 }
 
@@ -150,10 +152,10 @@ int main(int argc, char* argv[]) {
     //testManagersWithGui();
     //testWeekWidget();
     //mw.show();
-    testManagersWithGui();
+    //testManagersWithGui();
     //testWeekWidgetAndEventsList();
 
-    //testCalendarWidget();
+    testCalendarWidget();
 
     return app.exec();
 }
