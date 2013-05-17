@@ -32,7 +32,8 @@ void MainWindow::save() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Open Calendar"), QDir::currentPath(), tr("XML (*.xml);;All files (*.*)"));
     if(!fileName.isNull()) {
         QDomDocument doc;
-        calendar_->serialize(doc);
+        QDomElement element = calendar_->serialize(doc);
+        doc.appendChild(element);
         QFile file(fileName);
         QTextStream stream(&file);
         stream << doc.toString();

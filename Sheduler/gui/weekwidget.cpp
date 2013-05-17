@@ -58,9 +58,8 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
     setMinimumSize(400, 300);
 }
 
-void WeekWidget::paintEvent(QPaintEvent* event)
+void WeekWidget::paintEvent(QPaintEvent*)
 {
-    std::cerr << "paintEvent " << rand() << std::endl;
     for (auto frame : dayFrames)
     {
         if (frame->underMouse())
@@ -123,13 +122,13 @@ DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
     }
 }
 
-void DayOfWeek::mousePressEvent(QMouseEvent* event)
+void DayOfWeek::mousePressEvent(QMouseEvent* )
 {
     WeekWidget* parent = (WeekWidget*)this->parent();
     parent->callAddEventDialog(day.dayOfWeek() - 1);
 }
 
-void DayOfWeek::paintEvent(QPaintEvent* event)
+void DayOfWeek::paintEvent(QPaintEvent* )
 {
 }
 

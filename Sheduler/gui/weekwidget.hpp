@@ -18,7 +18,7 @@ class DayOfWeek : public QFrame
     Q_OBJECT
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent*);
 
 private:
     ScheduleManager* manager;
@@ -30,7 +30,7 @@ public:
 signals:
 
 public slots:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent*);
     QSize sizeHint() const;
 
 };
@@ -56,7 +56,7 @@ signals:
     void addWeeklyWidget(int dayOfWeek, Event* event);
     
 public slots:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent*);
     
 };
 

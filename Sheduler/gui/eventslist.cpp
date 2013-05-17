@@ -1,7 +1,7 @@
 #include <gui/eventslist.hpp>
 
 EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent) :
-    QWidget(parent), manager(manager), lastDay(lastDay), firstDay(firstDay)
+    QWidget(parent), manager(manager), firstDay(firstDay), lastDay(lastDay)
 {
     QVector< QVector<Event*> > events;
 

@@ -149,11 +149,11 @@ int main(int argc, char* argv[]) {
     //testManagers();
     //testManagersWithGui();
     //testWeekWidget();
-    mw.show();
+    //mw.show();
     testManagersWithGui();
-    testWeekWidgetAndEventsList();
+    //testWeekWidgetAndEventsList();
 
-    testCalendarWidget();
+    //testCalendarWidget();
 
     return app.exec();
 }
