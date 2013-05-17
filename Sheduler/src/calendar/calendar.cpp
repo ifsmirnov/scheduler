@@ -4,6 +4,12 @@
 
 #include <iostream>
 
+#include <QFile>
+#include <QString>
+#include <QIODevice>
+#include <QDomDocument>
+#include <QDomElement>
+
 using calendar_containers::GlobalContainer;
 
 Calendar::Calendar(QObject *parent) :
@@ -25,6 +31,18 @@ Calendar::Calendar(SingleManager *singleManager, WeekManager *weekManager, QObje
 }
 Calendar::~Calendar()
 {
+    std::cerr << "Quit, there are " << manager->getEvents(QDate::currentDate()).size() <<
+                 " events today" << std::endl;
+
+    /*QFile file("/tmp/ser");
+    file.open(QIODevice::WriteOnly);
+
+    QDomDocument document;
+    document.appendChild(serialize(document));
+
+    file.write(document.toString(2).toAscii());
+    file.close();*/
+
     delete manager;
 }
 

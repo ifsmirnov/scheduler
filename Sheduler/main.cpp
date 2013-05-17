@@ -85,13 +85,27 @@ void testManagers()
     std::cerr << "Events count: " << Event::count << std::endl;
 }
 
+Calendar calendar;
+
 void testManagersWithGui()
 {
     QDate date = QDate::currentDate();
-    Calendar *calendar = new Calendar;
+
+    QFile file("/tmp/ser");
+    file.open(QIODevice::ReadOnly);
+    QDomDocument document;
+    document.setContent(&file);
+
+    Calendar *calendar = Calendar::deserialize(document.firstChildElement("calendar"));
+
     DayWidget *dayWidget = new DayWidget(calendar->getManager(), date);
     QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
                      calendar, SLOT(addIrregularEvent(QDate,Event*)));
+
+    /*DayWidget *dayWidget = new DayWidget(calendar.getManager(), date);
+    QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                     &calendar, SLOT(addIrregularEvent(QDate,Event*)));
+                             */
     dayWidget->show();
 }
 

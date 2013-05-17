@@ -29,7 +29,7 @@ ScheduleManager *ScheduleManager::deserialize(QDomElement element)
         return SingleManager::deserialize(element);
     }
     else if (type == "week") {
-        return SingleManager::deserialize(element);
+        return WeekManager::deserialize(element);
     }
     else if (type == "collection") {
         return CollectionManager::deserialize(element);
