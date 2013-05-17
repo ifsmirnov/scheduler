@@ -110,7 +110,7 @@ void testManagersWithGui()
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPalette pal = app.palette();
-    MainWindow mw;
+    MainWindow mw(new Calendar());
 
     pal.setColor(QPalette::Window, QColor(Qt::green).lighter());
     app.setPalette(pal);
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
     //testDayWidget();
 
     //testManagers();
-    testManagersWithGui();
+    //testManagersWithGui();
     //testWeekWidget();
     mw.show();
 
