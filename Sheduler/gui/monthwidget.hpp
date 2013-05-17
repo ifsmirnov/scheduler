@@ -18,6 +18,9 @@ public:
     bool getCovered() const;
     void setCovered(bool value);
 
+    bool getHighlited() const;
+    void setHighlited(bool value);
+
 public slots:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
@@ -31,6 +34,7 @@ private:
     ScheduleManager *manager;
     QDate date;
     bool covered;
+    bool highlited;
 };
 
 class MonthWidget : public QWidget
@@ -53,6 +57,10 @@ public slots:
     void dayCovered(int day);
 
 public:
+    bool hasHighlight() const;
+
+signals:
+    void dayPressedSignal(int day);
 
 private:
     int curYear, curMonth, curDay;

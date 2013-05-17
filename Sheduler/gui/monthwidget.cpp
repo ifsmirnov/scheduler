@@ -12,8 +12,9 @@ MonthWidget::MonthWidget(ScheduleManager *manager, QDate date, QWidget *parent) 
     coveredDay = -1;
     date.setDate(date.year(), date.month(), 1);
 
-    setHighlight(date);
-    noHighlight();
+    curDay = -1;
+    curMonth = date.month();
+    curYear = date.year();
 
     QGridLayout *layout = new QGridLayout(this);
 
@@ -44,14 +45,25 @@ MonthWidget::~MonthWidget()
 
 void MonthWidget::setHighlight(QDate date)
 {
+    if (curDay != date.day() && curDay != -1) {
+        days[curDay - 1]->setHighlited(false);
+    }
     curYear = date.year();
     curMonth = date.month();
     curDay = date.day();
+    days[curDay - 1]->setHighlited(true);
+
+    update();
 }
 
 void MonthWidget::noHighlight()
 {
+    if (curDay != -1) {
+        days[curDay - 1]->setHighlited(false);
+    }
     curDay = -1;
+
+    update();
 }
 
 void MonthWidget::mousePressEvent(QMouseEvent *event)
@@ -71,6 +83,7 @@ void MonthWidget::mouseMoveEvent(QMouseEvent *)
 void MonthWidget::dayPressed(int day)
 {
     std::cerr << "Mouse button pressed on day " << day << std::endl;
+    emit dayPressedSignal(day);
 }
 
 void MonthWidget::dayCovered(int day)
@@ -86,11 +99,17 @@ void MonthWidget::dayCovered(int day)
     }
 }
 
+bool MonthWidget::hasHighlight() const
+{
+    return curDay != -1;
+}
+
 
 DayOfMonth::DayOfMonth(ScheduleManager *manager, QDate date, QWidget *parent) :
     QWidget(parent), manager(manager), date(date)
 {
     covered = false;
+    highlited = false;
     setMouseTracking(true);
 }
 
@@ -115,10 +134,11 @@ void DayOfMonth::paintEvent(QPaintEvent *)
     if (covered) {
         painter.setBrush(palette().dark());
     }
-    painter.drawRect(rect().adjusted(0, 0, -1, -1));
-    if (covered) {
-        painter.setBrush(palette().background());
+    else if (highlited) {
+        painter.setBrush(palette().alternateBase());
     }
+    painter.drawRect(rect().adjusted(0, 0, -1, -1));
+    painter.setBrush(palette().background());
     QString text = QString::number(date.day()) +
             "\n" +
             QString::number(manager->getEvents(date).size());
@@ -145,4 +165,14 @@ bool DayOfMonth::getCovered() const
 void DayOfMonth::setCovered(bool value)
 {
     covered = value;
+}
+
+bool DayOfMonth::getHighlited() const
+{
+return highlited;
+}
+
+void DayOfMonth::setHighlited(bool value)
+{
+highlited = value;
 }

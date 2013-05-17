@@ -6,6 +6,7 @@
 #include "src/calendar/calendar.hpp"
 #include "src/managers/schedulemanager.hpp"
 #include "gui/daywidget.hpp"
+#include "gui/monthwidget.hpp"
 
 class CalendarWidget : public QWidget
 {
@@ -17,12 +18,12 @@ public:
 signals:
     
 public slots:
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *event);
     void closeEvent(QCloseEvent *);
 
     void setHighlight(QDate date);
     void noHighlight();
+
+    void dayPressed(int day);
 
 public:
     bool hasHighlight() const;
@@ -33,6 +34,7 @@ private:
     int curYear, curMonth, curDay;
 
     DayWidget *dayWidget;
+    MonthWidget *monthWidget;
     
 };
 
