@@ -21,6 +21,8 @@ public:
     bool getHighlited() const;
     void setHighlited(bool value);
 
+    void setManager(ScheduleManager *manager_);
+
 public slots:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
@@ -58,6 +60,7 @@ public slots:
 
 public:
     bool hasHighlight() const;
+    void setManager(ScheduleManager *manager_);
 
 signals:
     void dayPressedSignal(int day);

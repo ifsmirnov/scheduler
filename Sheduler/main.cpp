@@ -160,12 +160,12 @@ int main(int argc, char* argv[]) {
     //testManagers();
     //testManagersWithGui();
     //testWeekWidget();
-    //mw.show();
+    mw.show();
     //testManagersWithGui();
     //testWeekWidgetAndEventsList();
 
     //testCalendarWidget();
-    testMonthWidget();
+    //testMonthWidget();
 
     return app.exec();
 }

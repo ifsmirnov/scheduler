@@ -46,7 +46,6 @@ void CalendarWidget::noHighlight()
 
 void CalendarWidget::dayPressed(int day)
 {
-    std::cerr << "dp " << day << std::endl;
     if (monthWidget->hasHighlight()) {
         monthWidget->noHighlight();
         if (dayWidget) {
@@ -77,6 +76,7 @@ bool CalendarWidget::hasHighlight() const
 void CalendarWidget::setCalendar(Calendar *newCalendar)
 {
     calendar = newCalendar;
+    monthWidget->setManager(calendar->getManager());
 }
 
 void CalendarWidget::setHighlight(QDate date)

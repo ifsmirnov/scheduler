@@ -82,7 +82,6 @@ void MonthWidget::mouseMoveEvent(QMouseEvent *)
 
 void MonthWidget::dayPressed(int day)
 {
-    std::cerr << "Mouse button pressed on day " << day << std::endl;
     emit dayPressedSignal(day);
 }
 
@@ -102,6 +101,15 @@ void MonthWidget::dayCovered(int day)
 bool MonthWidget::hasHighlight() const
 {
     return curDay != -1;
+}
+
+void MonthWidget::setManager(ScheduleManager *manager_)
+{
+    manager = manager_;
+
+    for (auto day: days) {
+        day->setManager(manager);
+    }
 }
 
 
@@ -174,5 +182,10 @@ return highlited;
 
 void DayOfMonth::setHighlited(bool value)
 {
-highlited = value;
+    highlited = value;
+}
+
+void DayOfMonth::setManager(ScheduleManager *manager_)
+{
+    manager = manager_;
 }
