@@ -30,6 +30,8 @@
 #include "src/managers/singlemanager.hpp"
 #include "src/managers/weekmanager.hpp"
 
+#include "gui/calendarwidget.hpp"
+
 
 void testDayWidget() {
 
@@ -104,16 +106,36 @@ void testManagers()
     std::cerr << "Events count: " << Event::count << std::endl;
 }
 
+//Calendar calendar;
+
 void testManagersWithGui()
 {
     QDate date = QDate::currentDate();
-    Calendar *calendar = new Calendar;
+
+    QFile file("/tmp/ser");
+    file.open(QIODevice::ReadOnly);
+    QDomDocument document;
+    document.setContent(&file);
+
+    Calendar *calendar = Calendar::deserialize(document.firstChildElement("calendar"));
+
     DayWidget *dayWidget = new DayWidget(calendar->getManager(), date);
     QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
                      calendar, SLOT(addIrregularEvent(QDate,Event*)));
+
+    /*DayWidget *dayWidget = new DayWidget(calendar.getManager(), date);
+    QObject::connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                     &calendar, SLOT(addIrregularEvent(QDate,Event*)));
+                             */
     dayWidget->show();
 }
 
+void testCalendarWidget()
+{
+    QDate date = QDate::currentDate();
+    CalendarWidget *calendarWidget = new CalendarWidget(date, new CollectionManager);
+    calendarWidget->show();
+}
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -124,7 +146,6 @@ int main(int argc, char* argv[]) {
     app.setPalette(pal);
 
     //testDayWidget();
-
     //testManagers();
     //testManagersWithGui();
     //testWeekWidget();
@@ -132,6 +153,7 @@ int main(int argc, char* argv[]) {
     testManagersWithGui();
     testWeekWidgetAndEventsList();
 
+    testCalendarWidget();
+
     return app.exec();
-    //return 0;
 }

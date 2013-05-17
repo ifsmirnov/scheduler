@@ -20,6 +20,9 @@ public:
     //int childCount() const;
     //ScheduleManager *getChildManager(int id);
 
+    virtual QDomElement serialize(QDomDocument &document);
+    static ScheduleManager *deserialize(QDomElement element);
+
 private:
     QVector<ScheduleManager*> managers;
 };

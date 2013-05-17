@@ -18,7 +18,8 @@ SOURCES += \
     src/managers/weekmanager.cpp \
     src/managers/collectionmanager.cpp \
     gui/mainwindow.cpp \
-    gui/eventslist.cpp
+    gui/eventslist.cpp \
+    gui/calendarwidget.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -39,7 +40,8 @@ HEADERS += \
     src/managers/weekmanager.hpp \
     src/managers/collectionmanager.hpp \
     gui/mainwindow.hpp \
-    gui/eventslist.hpp
+    gui/eventslist.hpp \
+    gui/calendarwidget.hpp
 
 INCLUDEPATH += DEPENDPATH
 

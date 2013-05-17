@@ -3,6 +3,8 @@
 
 #include <QVector>
 #include <QDate>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include "src/event.hpp"
 
@@ -14,6 +16,9 @@ public:
 
 public:
     virtual QVector<Event*> getEvents(QDate date) = 0;
+
+    virtual QDomElement serialize(QDomDocument &document) = 0;
+    static ScheduleManager *deserialize(QDomElement element);
 };
 
 #endif // SCHEDULEMANAGER_HPP

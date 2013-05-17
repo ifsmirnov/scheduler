@@ -1,5 +1,7 @@
 #include "collectionmanager.hpp"
 
+#include <iostream>
+
 CollectionManager::CollectionManager()
 {
 }
@@ -23,6 +25,38 @@ QVector<Event *> CollectionManager::getEvents(QDate date)
 ScheduleManager *CollectionManager::addChildManager(ScheduleManager *manager)
 {
     managers.push_back(manager);
+    return manager;
+}
+
+QDomElement CollectionManager::serialize(QDomDocument &document)
+{
+    QDomElement element = document.createElement("manager");
+    element.setAttribute("type", "collection");
+
+    for (auto manager: managers) {
+        element.appendChild(manager->serialize(document));
+    }
+
+    return element;
+}
+
+ScheduleManager *CollectionManager::deserialize(QDomElement element)
+{
+    if (element.tagName() != "manager") {
+        std::cerr << "Not a manager" << std::endl;
+    }
+
+    if (!element.hasAttribute("type") || element.attribute("type") != "collection") {
+        std::cerr << "Not a collection manager" << std::endl;
+    }
+
+    CollectionManager *manager = new CollectionManager;
+    for (QDomElement child = element.firstChildElement("manager");
+         !child.isNull();
+         child = child.nextSiblingElement("manager")) {
+        manager->addChildManager(ScheduleManager::deserialize(child));
+    }
+
     return manager;
 }
 
