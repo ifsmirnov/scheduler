@@ -27,6 +27,8 @@
 #include "src/managers/singlemanager.hpp"
 #include "src/managers/weekmanager.hpp"
 
+#include "gui/calendarwidget.hpp"
+
 
 void testDayWidget() {
 
@@ -85,7 +87,7 @@ void testManagers()
     std::cerr << "Events count: " << Event::count << std::endl;
 }
 
-Calendar calendar;
+//Calendar calendar;
 
 void testManagersWithGui()
 {
@@ -109,6 +111,13 @@ void testManagersWithGui()
     dayWidget->show();
 }
 
+void testCalendarWidget()
+{
+    QDate date = QDate::currentDate();
+    CalendarWidget *calendarWidget = new CalendarWidget(date, new CollectionManager);
+    calendarWidget->show();
+}
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPalette pal = app.palette();
@@ -117,10 +126,10 @@ int main(int argc, char* argv[]) {
     app.setPalette(pal);
 
     //testDayWidget();
-
     //testManagers();
-    testManagersWithGui();
+    //testManagersWithGui();
+
+    testCalendarWidget();
 
     return app.exec();
-    //return 0;
 }
