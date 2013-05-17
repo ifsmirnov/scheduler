@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "gui/calendarwidget.hpp"
+
 class MainWindow: public QMainWindow
 {
     Q_OBJECT
@@ -26,6 +28,10 @@ private:
     QAction* openAct_;
     QAction* saveAct_;
     Calendar* calendar_;
+
+    CalendarWidget *calendarWidget;
+
+
 
     void createActions();
     void createMenus();

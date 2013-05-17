@@ -26,6 +26,7 @@ public slots:
 
 public:
     bool hasHighlight() const;
+    void setCalendar(Calendar *newCalendar);
 
 private:
     Calendar *calendar;

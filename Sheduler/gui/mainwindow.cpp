@@ -5,6 +5,10 @@ MainWindow::MainWindow(Calendar* calendar, QWidget* parent):
 {
     createActions();
     createMenus();
+
+    calendarWidget = new CalendarWidget(QDate::currentDate(), calendar, this);
+    setCentralWidget(calendarWidget);
+    //calendarWidget->show();
 }
 
 
@@ -34,7 +38,9 @@ void MainWindow::save() {
         QDomDocument doc;
         QDomElement element = calendar_->serialize(doc);
         doc.appendChild(element);
+        std::cerr << "Filename = " << fileName.toStdString() << std::endl;
         QFile file(fileName);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream stream(&file);
         stream << doc.toString();
         file.close();
@@ -49,8 +55,9 @@ void MainWindow::open() {
         QDomDocument doc;
         doc.setContent(&file);
         file.close();
-        Calendar* cal = Calendar::deserialize(doc.toElement());
+        Calendar* cal = Calendar::deserialize(doc.firstChildElement("calendar"));
         delete calendar_;
         calendar_ = cal;
+        calendarWidget->setCalendar(calendar_);
     }
 }

@@ -81,6 +81,11 @@ bool CalendarWidget::hasHighlight() const
     return curDay != -1;
 }
 
+void CalendarWidget::setCalendar(Calendar *newCalendar)
+{
+    calendar = newCalendar;
+}
+
 void CalendarWidget::setHighlight(QDate date)
 {
     curYear = date.year();
