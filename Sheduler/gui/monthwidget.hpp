@@ -21,6 +21,8 @@ public:
     bool getHighlited() const;
     void setHighlited(bool value);
 
+    void setDate(QDate date_);
+
     void setManager(ScheduleManager *manager_);
 
 public slots:
@@ -52,7 +54,6 @@ public slots:
     void setHighlight(QDate date);
     void noHighlight();
 
-    void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *);
 
     void dayPressed(int day);
@@ -63,7 +64,10 @@ public:
     void setManager(ScheduleManager *manager_);
 
 signals:
-    void dayPressedSignal(int day);
+    void dayPressedSignal(QDate date);
+
+private:
+    void setMonth(QDate date);
 
 private:
     int curYear, curMonth, curDay;

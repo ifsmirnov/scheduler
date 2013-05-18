@@ -18,8 +18,8 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
     monthWidget = new MonthWidget(calendar->getManager(), date, this);
     layout->addWidget(monthWidget);
 
-    connect(monthWidget, SIGNAL(dayPressedSignal(int)),
-            this, SLOT(dayPressed(int)));
+    connect(monthWidget, SIGNAL(dayPressedSignal(QDate)),
+            this, SLOT(dayPressed(QDate)));
 }
 
 CalendarWidget::~CalendarWidget()
@@ -44,7 +44,7 @@ void CalendarWidget::noHighlight()
     }
 }
 
-void CalendarWidget::dayPressed(int day)
+void CalendarWidget::dayPressed(QDate date)
 {
     if (monthWidget->hasHighlight()) {
         monthWidget->noHighlight();
@@ -53,7 +53,6 @@ void CalendarWidget::dayPressed(int day)
         }
     }
     else {
-        QDate date(curYear, curMonth, day + 1);
         monthWidget->setHighlight(date);
         dayWidget = new DayWidget(calendar->getManager(), date);
 

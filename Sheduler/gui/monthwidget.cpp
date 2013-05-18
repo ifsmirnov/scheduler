@@ -16,22 +16,21 @@ MonthWidget::MonthWidget(ScheduleManager *manager, QDate date, QWidget *parent) 
     curMonth = date.month();
     curYear = date.year();
 
-    QGridLayout *layout = new QGridLayout(this);
-
-    days.resize(date.daysInMonth());
-    for (int day = 0; day < date.daysInMonth(); day++, date = date.addDays(1)) {
-        days[day] = new DayOfMonth(manager, date, this);
+    days.resize(31);
+    for (int day = 0; day < 31; day++) {
+        days[day] = new DayOfMonth(manager, QDate(2013, 1, day + 1), this);
+        days[day]->hide();
         days[day]->setMinimumSize(50, 50);
 
         connect(days[day], SIGNAL(dayCovered(int)),
                 this, SLOT(dayCovered(int)));
         connect(days[day], SIGNAL(dayPressed(int)),
                 this, SLOT(dayPressed(int)));
-
-        layout->addWidget(days[day], day/7, day%7);
     }
 
-    setLayout(layout);
+    setLayout(new QGridLayout(this));
+
+    setMonth(date);
 
     setMouseTracking(true);
 }
@@ -45,6 +44,9 @@ MonthWidget::~MonthWidget()
 
 void MonthWidget::setHighlight(QDate date)
 {
+    if (date.month() != curMonth) {
+        setMonth(date);
+    }
     if (curDay != date.day() && curDay != -1) {
         days[curDay - 1]->setHighlited(false);
     }
@@ -66,11 +68,6 @@ void MonthWidget::noHighlight()
     update();
 }
 
-void MonthWidget::mousePressEvent(QMouseEvent *event)
-{
-    QWidget::mousePressEvent(event);
-}
-
 void MonthWidget::mouseMoveEvent(QMouseEvent *)
 {
     if (coveredDay != -1) {
@@ -82,7 +79,7 @@ void MonthWidget::mouseMoveEvent(QMouseEvent *)
 
 void MonthWidget::dayPressed(int day)
 {
-    emit dayPressedSignal(day);
+    emit dayPressedSignal(QDate(curYear, curMonth, day + 1));
 }
 
 void MonthWidget::dayCovered(int day)
@@ -109,6 +106,28 @@ void MonthWidget::setManager(ScheduleManager *manager_)
 
     for (auto day: days) {
         day->setManager(manager);
+    }
+}
+
+void MonthWidget::setMonth(QDate date)
+{
+    std::cerr << "Set month " << date.toString().toStdString() << std::endl;
+    for (int day = 0; day < 31; day++) {
+        layout()->removeWidget(days[day]);
+        days[day]->hide();
+    }
+    date = QDate(date.year(), date.month(), 1);
+
+    int shift = date.dayOfWeek() - 1;
+    QGridLayout *layout = dynamic_cast<QGridLayout*>(this->layout());
+    if (layout == nullptr) {
+        std::cerr << "Bad cast" << std::endl;
+    }
+    int daysInMonth = date.daysInMonth();
+    for (int day = 0; day < daysInMonth; day++, date = date.addDays(1)) {
+        days[day]->setDate(date);
+        layout->addWidget(days[day], (day+shift) / 7, (day+shift) % 7);
+        days[day]->show();
     }
 }
 
@@ -165,24 +184,22 @@ void DayOfMonth::mouseMoveEvent(QMouseEvent *)
     }
 }
 
-bool DayOfMonth::getCovered() const
-{
-    return covered;
-}
-
 void DayOfMonth::setCovered(bool value)
 {
     covered = value;
 }
 
-bool DayOfMonth::getHighlited() const
-{
-return highlited;
-}
-
 void DayOfMonth::setHighlited(bool value)
 {
     highlited = value;
+}
+
+void DayOfMonth::setDate(QDate date_)
+{
+    date = date_;
+    if (date.day() != date_.day()) {
+        std::cerr << "Day accidentaly changed with month and year" << std::endl;
+    }
 }
 
 void DayOfMonth::setManager(ScheduleManager *manager_)

@@ -23,7 +23,7 @@ public slots:
     void setHighlight(QDate date);
     void noHighlight();
 
-    void dayPressed(int day);
+    void dayPressed(QDate date);
 
 public:
     bool hasHighlight() const;
