@@ -54,9 +54,11 @@ public:
 
 signals:
     void addWeeklyWidget(int dayOfWeek, Event* event);
+    void closed();
     
 public slots:
     void paintEvent(QPaintEvent*);
+    void closeEvent(QCloseEvent *);
     
 };
 

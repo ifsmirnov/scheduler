@@ -73,6 +73,12 @@ void WeekWidget::paintEvent(QPaintEvent*)
     }
 }
 
+void WeekWidget::closeEvent(QCloseEvent *event)
+{
+    emit closed();
+    QWidget::closeEvent(event);
+}
+
 void WeekWidget::callAddEventDialog(int dayOfWeek)
 {
     AddEventDialog* addEventDialog = new AddEventDialog(QDate(), dayOfWeek, this);
