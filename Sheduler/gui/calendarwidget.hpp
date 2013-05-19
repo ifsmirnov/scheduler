@@ -20,13 +20,9 @@ signals:
 public slots:
     void closeEvent(QCloseEvent *);
 
-    void setHighlight(QDate date);
-    void noHighlight();
-
     void dayPressed(QDate date);
 
 public:
-    bool hasHighlight() const;
     void setCalendar(Calendar *newCalendar);
 
 private:
