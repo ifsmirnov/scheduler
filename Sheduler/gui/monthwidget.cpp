@@ -29,10 +29,9 @@ MonthWidget::MonthWidget(ScheduleManager *manager, QDate date, QWidget *parent) 
     }
 
     setLayout(new QGridLayout(this));
-
     setMonth(date);
-
     setMouseTracking(true);
+    initActions();
 }
 
 MonthWidget::~MonthWidget()
@@ -131,6 +130,21 @@ void MonthWidget::setMonth(QDate date)
     }
 }
 
+void MonthWidget::initActions()
+{
+    nextMonthAction = new QAction(this);
+    nextMonthAction->setShortcut(Qt::Key_Right);
+    connect(nextMonthAction, SIGNAL(triggered()),
+            this, SLOT(nextMonth()));
+    addAction(nextMonthAction);
+
+    prevMonthAction = new QAction(this);
+    prevMonthAction->setShortcut(Qt::Key_Left);
+    connect(prevMonthAction, SIGNAL(triggered()),
+            this, SLOT(prevMonth()));
+    addAction(prevMonthAction);
+}
+
 
 DayOfMonth::DayOfMonth(ScheduleManager *manager, QDate date, QWidget *parent) :
     QWidget(parent), manager(manager), date(date)
@@ -205,4 +219,27 @@ void DayOfMonth::setDate(QDate date_)
 void DayOfMonth::setManager(ScheduleManager *manager_)
 {
     manager = manager_;
+}
+
+
+void MonthWidget::nextMonth()
+{
+    noHighlight();
+    QDate date = QDate(curYear, curMonth, 1).addMonths(1);
+    setMonth(date);
+    curYear = date.year();
+    curMonth = date.month();
+    curDay = 1;
+    emit monthChanged(date);
+}
+
+void MonthWidget::prevMonth()
+{
+    noHighlight();
+    QDate date = QDate(curYear, curMonth, 1).addMonths(-1);
+    setMonth(date);
+    curYear = date.year();
+    curMonth = date.month();
+    curDay = 1;
+    emit monthChanged(date);
 }

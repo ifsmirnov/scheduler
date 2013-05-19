@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QVector>
+#include <QAction>
 #include <QDate>
 
 #include "src/managers/schedulemanager.hpp"
@@ -65,9 +66,15 @@ public:
 
 signals:
     void dayPressedSignal(QDate date);
+    void monthChanged(QDate date);
 
 private:
     void setMonth(QDate date);
+    void initActions();
+
+private slots:
+    void nextMonth();
+    void prevMonth();
 
 private:
     int curYear, curMonth, curDay;
@@ -75,6 +82,9 @@ private:
     ScheduleManager *manager;
     
     QVector<DayOfMonth*> days;
+
+    QAction *nextMonthAction;
+    QAction *prevMonthAction;
 };
 
 #endif // MONTHWIDGET_HPP

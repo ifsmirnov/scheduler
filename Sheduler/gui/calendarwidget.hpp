@@ -19,8 +19,8 @@ signals:
     
 public slots:
     void closeEvent(QCloseEvent *);
-
     void dayPressed(QDate date);
+    void setDate(QDate date);
 
 public:
     void setCalendar(Calendar *newCalendar);

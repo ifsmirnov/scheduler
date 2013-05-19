@@ -18,6 +18,8 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
 
     connect(monthWidget, SIGNAL(dayPressedSignal(QDate)),
             this, SLOT(dayPressed(QDate)));
+    connect(monthWidget, SIGNAL(monthChanged(QDate)),
+            this, SLOT(setDate(QDate)));
 }
 
 CalendarWidget::~CalendarWidget()
@@ -41,7 +43,8 @@ void CalendarWidget::dayPressed(QDate date)
             delete dayWidget;
         }
     }
-    else {
+    else
+    {
         monthWidget->setHighlight(date);
         dayWidget = new DayWidget(calendar->getManager(), date);
 
@@ -56,8 +59,16 @@ void CalendarWidget::dayPressed(QDate date)
     }
 }
 
+void CalendarWidget::setDate(QDate date)
+{
+    curYear = date.year();
+    curMonth = date.month();
+    curDay = date.day();
+}
+
 void CalendarWidget::setCalendar(Calendar *newCalendar)
 {
     calendar = newCalendar;
     monthWidget->setManager(calendar->getManager());
 }
+
