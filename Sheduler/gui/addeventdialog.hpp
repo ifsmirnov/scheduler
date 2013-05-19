@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QValidator>
+#include <QColor>
 #include <stdexcept>
 
 #include "src/irregularevent.hpp"
@@ -28,6 +29,7 @@ private:
     QLineEdit* duration_;
     QTextEdit* info_;
     QDate date_;
+    QColor color_;
     int dayOfWeek_;
 
 signals:

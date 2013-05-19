@@ -34,6 +34,10 @@ Event *Event::deserialize(QDomElement element)
         return new RegularEvent(begin, end, info);
     }
     else {
-        return new IrregularEvent(begin, end, info);
+        if (!element.hasAttribute("color")) {
+            std::cerr << "Irregular event without color" << std::endl;
+        }
+        QColor color = QColor(element.attribute("color"));
+        return new IrregularEvent(begin, end, info, color);
     }
 }

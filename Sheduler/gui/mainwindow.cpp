@@ -8,7 +8,7 @@ MainWindow::MainWindow(Calendar* calendar, QWidget* parent):
 
     calendarWidget = new CalendarWidget(QDate::currentDate(), calendar, this);
     setCentralWidget(calendarWidget);
-    //calendarWidget->show();
+    calendarWidget->show();
 }
 
 

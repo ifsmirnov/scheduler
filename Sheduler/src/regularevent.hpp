@@ -21,11 +21,13 @@ public:
     virtual QTime end() const;
     virtual int duration() const;
     virtual QString info() const;
+    virtual QColor color() const;
 
     virtual void setBegin(const QTime& time);
     virtual void setEnd(const QTime& time);
     virtual void setDuration(int value);
     virtual void setInfo(const QString& value);
+    virtual void setColor(const QColor& color);
 
     virtual bool isRegular() const;
 

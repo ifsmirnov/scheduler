@@ -11,8 +11,8 @@ class IrregularEvent : public Event
 {
 public:
     IrregularEvent();
-    IrregularEvent(QTime begin, int duration, QString info = "");
-    IrregularEvent(QTime begin, QTime end, QString info = "");
+    IrregularEvent(QTime begin, int duration, QString info = "", QColor color = QColor());
+    IrregularEvent(QTime begin, QTime end, QString info = "", QColor color = QColor());
     ~IrregularEvent();
 
 public:
@@ -20,11 +20,13 @@ public:
     virtual QTime end() const;
     virtual int duration() const;
     virtual QString info() const;
+    virtual QColor color() const;
 
     virtual void setBegin(const QTime& time);
     virtual void setEnd(const QTime& time);
     virtual void setDuration(int value);
     virtual void setInfo(const QString& value);
+    virtual void setColor(const QColor& color);
 
     virtual bool isRegular() const;
 
@@ -35,6 +37,7 @@ public:
 private:
     QTime begin_, end_;
     QString info_;
+    QColor color_;
 };
 
 #endif // IRREGULAREVENT_HPP

@@ -1,4 +1,5 @@
 #include "addeventdialog.hpp"
+#include <iostream>
 
 AddEventDialog::AddEventDialog(QDate date, int dayOfWeek, QWidget *parent):
     QDialog(parent), date_(date), dayOfWeek_(dayOfWeek)
@@ -55,7 +56,7 @@ AddEventDialog::AddEventDialog(QDate date, int dayOfWeek, QWidget *parent):
 
 void AddEventDialog::addEvent() {
     Event* event;
-    if (date_.isNull()) {
+    if (!date_.isNull()) {
         event = new IrregularEvent();
     } else {
         event = new RegularEvent();
@@ -65,6 +66,7 @@ void AddEventDialog::addEvent() {
         event->setDuration(duration_->text().toInt() * 60);
         event->setInfo(info_->toPlainText());
         if (!date_.isNull()) {
+            event->setColor(QColor(Qt::red));
             emit addIrregularEvent(date_, event);
         } else {
             emit addWeeklyEvent(dayOfWeek_, event);

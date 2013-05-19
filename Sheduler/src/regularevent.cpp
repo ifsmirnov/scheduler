@@ -51,6 +51,9 @@ int RegularEvent::duration() const {
 QString RegularEvent::info() const {
     return info_;
 }
+QColor RegularEvent::color() const {
+    return QColor();
+}
 
 void RegularEvent::setBegin(const QTime &time) {
     if (!time.isValid())
@@ -73,6 +76,7 @@ void RegularEvent::setDuration(int value) {
 void RegularEvent::setInfo(const QString &value) {
     info_ = value;
 }
+void RegularEvent::setColor(const QColor&) {}
 
 bool RegularEvent::isRegular() const {
     return true;

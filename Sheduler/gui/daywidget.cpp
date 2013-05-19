@@ -93,6 +93,7 @@ void DayScheduleWidget::paintEvent(QPaintEvent *) {
         painter.setBrush(QColor(Qt::red).lighter(150));
         for (auto event: irregularEvents_) {
             QRect eventRect = getEventRect(event);
+            painter.setBrush(event->color());
             painter.drawRect(eventRect);
             painter.setFont(QFont("verdana", -1, -1, true));
             if (eventRect.height() >= letterHeight  &&  event->info().length() * letterWidth <= eventRect.width()) {

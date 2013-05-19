@@ -16,24 +16,26 @@ IrregularEvent::~IrregularEvent()
 {
 }
 
-IrregularEvent::IrregularEvent(QTime begin, int duration, QString info)
+IrregularEvent::IrregularEvent(QTime begin, int duration, QString info, QColor color)
 {
     try {
         setBegin(begin);
         setDuration(duration);
         setInfo(info);
+        setColor(color);
     }
     catch (std::invalid_argument &e) {
         std::cerr << "Incorrect argument " << e.what() << " passed to the IregularEvent constructor" << std::endl;
     }
 }
 
-IrregularEvent::IrregularEvent(QTime begin, QTime end, QString info)
+IrregularEvent::IrregularEvent(QTime begin, QTime end, QString info, QColor color)
 {
     try {
         setBegin(begin);
         setEnd(end);
         setInfo(info);
+        setColor(color);
     }
     catch (std::invalid_argument &e) {
         std::cerr << "Incorrect argument " << e.what() << " passed to the IregularEvent constructor" << std::endl;
@@ -51,6 +53,9 @@ int IrregularEvent::duration() const {
 }
 QString IrregularEvent::info() const {
     return info_;
+}
+QColor IrregularEvent::color() const {
+    return color_;
 }
 
 void IrregularEvent::setBegin(const QTime &time) {
@@ -74,6 +79,9 @@ void IrregularEvent::setDuration(int value) {
 void IrregularEvent::setInfo(const QString &value) {
     info_ = value;
 }
+void IrregularEvent::setColor(const QColor &color) {
+    color_ = color;
+}
 
 bool IrregularEvent::isRegular() const {
     return false;
@@ -92,6 +100,7 @@ QDomElement IrregularEvent::serialize(QDomDocument &document) const
     element.setAttribute("end", end().toString("hh:mm:ss"));
     element.setAttribute("info", info());
     element.setAttribute("regular", "false");
+    element.setAttribute("color", color().name());
 
     return element;
 }

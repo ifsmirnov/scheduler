@@ -3,6 +3,7 @@
 
 #include <QTime>
 #include <QString>
+#include <QColor>
 #include <QDomElement>
 #include <QDomDocument>
 
@@ -22,11 +23,13 @@ public:
     virtual QTime end() const = 0;
     virtual int duration() const = 0;
     virtual QString info() const = 0;
+    virtual QColor color() const = 0;
 
     virtual void setBegin(const QTime& time) = 0;
     virtual void setEnd(const QTime& time) = 0;
     virtual void setDuration(int value) = 0;
     virtual void setInfo(const QString& value) = 0;
+    virtual void setColor(const QColor& color) = 0;
 
     virtual bool isRegular() const = 0;
 
