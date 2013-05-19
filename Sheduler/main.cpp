@@ -64,6 +64,7 @@ void testDayWidget() {
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);
+            painter.drawText(textRect, "Date: " + day.toString());
     dailySchedules.push_back(schedule);
     dailySchedules.push_back(schedule);*/
 
@@ -74,8 +75,40 @@ void testDayWidget() {
 
 void testWeekWidgetAndEventsList() {
     Calendar* calendar = new Calendar();
-    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!");
-    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!");
+    Event* event1 = new IrregularEvent(QTime(12, 40), QTime(13, 10), "Tralala!", Qt::red);
+    Event* event2 = new IrregularEvent(QTime(14, 00), QTime(14, 30), "Trulala!", Qt::green);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
+    calendar->addIrregularEvent(QDate::currentDate(), event1);
+    calendar->addIrregularEvent(QDate::currentDate(), event2);
     calendar->addIrregularEvent(QDate::currentDate(), event1);
     calendar->addIrregularEvent(QDate::currentDate(), event2);
 
@@ -160,9 +193,9 @@ int main(int argc, char* argv[]) {
     //testManagers();
     //testManagersWithGui();
     //testWeekWidget();
-    mw.show();
+    //mw.show();
     //testManagersWithGui();
-    //testWeekWidgetAndEventsList();
+    testWeekWidgetAndEventsList();
 
     //testCalendarWidget();
     //testMonthWidget();
