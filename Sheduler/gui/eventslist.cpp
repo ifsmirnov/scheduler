@@ -1,6 +1,5 @@
 #include <gui/eventslist.hpp>
 
-
 ListWidget::ListWidget(QDate firstDay, QDate lastDay, ScheduleManager *manager, QWidget *parent) :
     QWidget(parent), manager(manager), firstDay(firstDay), lastDay(lastDay)
 {
@@ -8,7 +7,7 @@ ListWidget::ListWidget(QDate firstDay, QDate lastDay, ScheduleManager *manager, 
 
 
 void ListWidget::paintEvent(QPaintEvent *) {
-    int height = 0;
+    int height = 1;
     for (QDate day = firstDay; day <= lastDay; day = day.addDays(1))
     {
         QVector <Event*> events = manager->getEvents(day);
@@ -65,7 +64,7 @@ EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, 
     eventListLayout->addWidget(separator);
 
     QScrollArea* scrollArea = new QScrollArea();
-    ListWidget* list = new ListWidget(firstDay, lastDay, manager);
+    list = new ListWidget(firstDay, lastDay, manager);
     //eventListLayout->addWidget(list);
 
     scrollArea->setWidget(list);
@@ -73,4 +72,15 @@ EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, 
 
 
     setLayout(eventListLayout);
+}
+
+void ListWidget::setManager(ScheduleManager *value)
+{
+    manager = value;
+}
+
+void EventsList::setManager(ScheduleManager *value)
+{
+    manager = value;
+    list->setManager(value);
 }

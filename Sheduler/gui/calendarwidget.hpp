@@ -12,6 +12,7 @@
 #include "gui/daywidget.hpp"
 #include "gui/monthwidget.hpp"
 #include "gui/weekwidget.hpp"
+#include "gui/eventslist.hpp"
 
 class CalendarWidget : public QWidget
 {
@@ -38,6 +39,7 @@ private:
     DayWidget *dayWidget;
     MonthWidget *monthWidget;
     WeekWidget *weekWidget;
+    EventsList *eventList;
 
     QLabel *title;
 };

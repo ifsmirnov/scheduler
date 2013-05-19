@@ -29,6 +29,8 @@ private:
 public:
     ListWidget(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent = 0);
 
+    void setManager(ScheduleManager *value);
+
 public slots:
     void paintEvent(QPaintEvent *);
     QSize sizeHint() const;
@@ -44,8 +46,12 @@ private:
     QDate firstDay;
     QDate lastDay;
 
+    ListWidget *list;
+
 public:
     EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent = 0);
+
+    void setManager(ScheduleManager *value);
 
 signals:
 

@@ -8,8 +8,10 @@
 #include <QSizePolicy>
 #include <QVBoxLayout>
 #include <QFrame>
+#include <QTimer>
 
 #include "gui/weekwidget.hpp"
+#include "gui/eventslist.hpp"
 
 CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) :
     QWidget(parent), calendar(calendar), dayWidget(nullptr), weekWidget(nullptr)
@@ -31,12 +33,18 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
     title->setFont(QFont("Courier", 15));
     title->setAlignment(Qt::AlignCenter);
 
+    // event list
+    eventList = new EventsList(QDate::currentDate().addDays(-10),
+                                           QDate::currentDate().addDays(10),
+                                           calendar->getManager(), this);
+
     // widgets layout (month and events list)
     QHBoxLayout *widgetsLayout = new QHBoxLayout;
     widgetsLayout->addWidget(monthWidget);
+    widgetsLayout->addWidget(eventList);
 
+    // main layout
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-
     mainLayout->addWidget(title);
     mainLayout->addLayout(widgetsLayout);
     mainLayout->addWidget(weekButton);
@@ -90,7 +98,6 @@ void CalendarWidget::setDate(QDate date)
 
 void CalendarWidget::displayWeek()
 {
-    std::cerr << "Show week" << std::endl;
     if (weekWidget == nullptr) {
         weekWidget = new WeekWidget(date_, calendar->getManager());
         connect(weekWidget, SIGNAL(closed()),
@@ -101,7 +108,6 @@ void CalendarWidget::displayWeek()
 
 void CalendarWidget::closeWeek()
 {
-    std::cerr << "Close week" << std::endl;
     if (weekWidget != nullptr) {
         weekWidget->close();
         delete weekWidget;
@@ -113,5 +119,6 @@ void CalendarWidget::setCalendar(Calendar *newCalendar)
 {
     calendar = newCalendar;
     monthWidget->setManager(calendar->getManager());
+    eventList->setManager(calendar->getManager());
 }
 

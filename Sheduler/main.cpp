@@ -113,9 +113,9 @@ void testWeekWidgetAndEventsList() {
     calendar->addIrregularEvent(QDate::currentDate(), event2);
 
 
-    WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
+    /*WeekWidget* weekWidget = new WeekWidget(QDate::currentDate(), calendar->getManager());
     QObject::connect(weekWidget, SIGNAL(addWeeklyWidget(int,Event*)), calendar, SLOT(addWeeklyEvent(int,Event*)));
-    weekWidget->show();
+    weekWidget->show();*/
 
     EventsList* eventsList = new EventsList(QDate::currentDate(), QDate::currentDate(), calendar->getManager());
     eventsList->show();
@@ -193,9 +193,9 @@ int main(int argc, char* argv[]) {
     //testManagers();
     //testManagersWithGui();
     //testWeekWidget();
-    //mw.show();
+    mw.show();
     //testManagersWithGui();
-    testWeekWidgetAndEventsList();
+    //testWeekWidgetAndEventsList();
 
     //testCalendarWidget();
     //testMonthWidget();
