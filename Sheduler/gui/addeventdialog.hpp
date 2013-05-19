@@ -9,6 +9,9 @@
 #include <QLineEdit>
 #include <QValidator>
 #include <QColor>
+#include <QVector>
+#include <QComboBox>
+#include <QPixmap>
 #include <stdexcept>
 
 #include "src/irregularevent.hpp"
@@ -28,8 +31,9 @@ private:
     QLineEdit* minutes_;
     QLineEdit* duration_;
     QTextEdit* info_;
+    QComboBox* colorPicker_;
     QDate date_;
-    QColor color_;
+    QVector<QColor> colors_;
     int dayOfWeek_;
 
 signals:
@@ -38,6 +42,9 @@ signals:
 
 private slots:
     void addEvent();
+
+private:
+    void initColorPicker();
 };
 
 #endif // ADDEVENTDIALOG_HPP
