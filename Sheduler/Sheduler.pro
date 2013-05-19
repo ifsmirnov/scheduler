@@ -19,7 +19,8 @@ SOURCES += \
     src/managers/collectionmanager.cpp \
     gui/mainwindow.cpp \
     gui/eventslist.cpp \
-    gui/calendarwidget.cpp
+    gui/calendarwidget.cpp \
+    gui/monthwidget.cpp
 
 HEADERS += \
     src/regularevent.hpp \
@@ -41,7 +42,8 @@ HEADERS += \
     src/managers/collectionmanager.hpp \
     gui/mainwindow.hpp \
     gui/eventslist.hpp \
-    gui/calendarwidget.hpp
+    gui/calendarwidget.hpp \
+    gui/monthwidget.hpp
 
 INCLUDEPATH += DEPENDPATH
 

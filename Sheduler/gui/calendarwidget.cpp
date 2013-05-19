@@ -4,6 +4,8 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QHBoxLayout>
+#include <QFrame>
 
 CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) :
     QWidget(parent), calendar(calendar), dayWidget(nullptr)
@@ -11,52 +13,18 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
     std::cerr << "CW created" << std::endl;
     setHighlight(date);
     noHighlight();
+
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    monthWidget = new MonthWidget(calendar->getManager(), date, this);
+    layout->addWidget(monthWidget);
+
+    connect(monthWidget, SIGNAL(dayPressedSignal(QDate)),
+            this, SLOT(dayPressed(QDate)));
 }
 
 CalendarWidget::~CalendarWidget()
 {
     std::cerr << "Calendar widget removed" << std::endl;
-}
-
-void CalendarWidget::paintEvent(QPaintEvent *)
-{
-    QPainter painter(this);
-
-    if (hasHighlight()) {
-        painter.drawText(rect(), QDate(curYear, curMonth, curDay).toString());
-    }
-    else {
-        painter.drawText(rect(), "No day specified");
-    }
-}
-
-void CalendarWidget::mousePressEvent(QMouseEvent *event)
-{
-    std::cerr << "mpe" << std::endl;
-    if (event->button() == Qt::LeftButton) {
-        if (hasHighlight()) {
-            noHighlight();
-        }
-        else {
-            setHighlight(QDate::currentDate());
-
-            dayWidget = new DayWidget(calendar->getManager(), QDate::currentDate());
-            connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
-                    calendar, SLOT(addIrregularEvent(QDate,Event*)));
-            connect(dayWidget, SIGNAL(dateChanged(QDate)),
-                    this, SLOT(setHighlight(QDate)));
-            connect(dayWidget, SIGNAL(closed()),
-                    this, SLOT(noHighlight()));
-
-            dayWidget->show();
-            std::cerr << "Created dw" << std::endl;
-        }
-        update();
-    }
-    else {
-        QWidget::mousePressEvent(event);
-    }
-
 }
 
 void CalendarWidget::closeEvent(QCloseEvent *)
@@ -76,6 +44,29 @@ void CalendarWidget::noHighlight()
     }
 }
 
+void CalendarWidget::dayPressed(QDate date)
+{
+    if (monthWidget->hasHighlight()) {
+        monthWidget->noHighlight();
+        if (dayWidget) {
+            delete dayWidget;
+        }
+    }
+    else {
+        monthWidget->setHighlight(date);
+        dayWidget = new DayWidget(calendar->getManager(), date);
+
+        connect(dayWidget, SIGNAL(dateChanged(QDate)),
+                monthWidget, SLOT(setHighlight(QDate)));
+        connect(dayWidget, SIGNAL(addIrregularEvent(QDate,Event*)),
+                calendar, SLOT(addIrregularEvent(QDate,Event*)));
+        connect(dayWidget, SIGNAL(closed()),
+                monthWidget, SLOT(noHighlight()));
+
+        dayWidget->show();
+    }
+}
+
 bool CalendarWidget::hasHighlight() const
 {
     return curDay != -1;
@@ -84,6 +75,7 @@ bool CalendarWidget::hasHighlight() const
 void CalendarWidget::setCalendar(Calendar *newCalendar)
 {
     calendar = newCalendar;
+    monthWidget->setManager(calendar->getManager());
 }
 
 void CalendarWidget::setHighlight(QDate date)

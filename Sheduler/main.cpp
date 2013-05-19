@@ -31,6 +31,7 @@
 #include "src/managers/weekmanager.hpp"
 
 #include "gui/calendarwidget.hpp"
+#include "gui/monthwidget.hpp"
 
 
 void testDayWidget() {
@@ -139,6 +140,14 @@ void testCalendarWidget()
     calendarWidget->show();
 }
 
+void testMonthWidget()
+{
+    Calendar *calendar = new Calendar;
+    MonthWidget *widget = new MonthWidget(calendar->getManager(), QDate::currentDate());
+
+    widget->show();
+}
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     QPalette pal = app.palette();
@@ -156,6 +165,7 @@ int main(int argc, char* argv[]) {
     //testWeekWidgetAndEventsList();
 
     //testCalendarWidget();
+    //testMonthWidget();
 
     return app.exec();
 }
