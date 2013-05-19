@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QGridLayout>
 #include <QMouseEvent>
+#include <QSizePolicy>
 
 MonthWidget::MonthWidget(ScheduleManager *manager, QDate date, QWidget *parent) :
     QWidget(parent), manager(manager)
@@ -110,7 +111,6 @@ void MonthWidget::setManager(ScheduleManager *manager_)
 
 void MonthWidget::setMonth(QDate date)
 {
-    std::cerr << "Set month " << date.toString().toStdString() << std::endl;
     for (int day = 0; day < 31; day++) {
         layout()->removeWidget(days[day]);
         days[day]->hide();
@@ -128,6 +128,8 @@ void MonthWidget::setMonth(QDate date)
         layout->addWidget(days[day], (day+shift) / 7, (day+shift) % 7);
         days[day]->show();
     }
+
+    emit monthChanged(date.addMonths(-1));
 }
 
 void MonthWidget::initActions()
@@ -229,8 +231,7 @@ void MonthWidget::nextMonth()
     setMonth(date);
     curYear = date.year();
     curMonth = date.month();
-    curDay = 1;
-    emit monthChanged(date);
+    curDay = -1;
 }
 
 void MonthWidget::prevMonth()
@@ -240,6 +241,5 @@ void MonthWidget::prevMonth()
     setMonth(date);
     curYear = date.year();
     curMonth = date.month();
-    curDay = 1;
-    emit monthChanged(date);
+    curDay = -1;
 }

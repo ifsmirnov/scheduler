@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QHBoxLayout>
+#include <QSizePolicy>
+#include <QVBoxLayout>
 #include <QFrame>
 
 CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) :
@@ -12,14 +14,25 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
 {
     std::cerr << "CW created" << std::endl;
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
     monthWidget = new MonthWidget(calendar->getManager(), date, this);
-    layout->addWidget(monthWidget);
-
     connect(monthWidget, SIGNAL(dayPressedSignal(QDate)),
             this, SLOT(dayPressed(QDate)));
     connect(monthWidget, SIGNAL(monthChanged(QDate)),
             this, SLOT(setDate(QDate)));
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    QHBoxLayout *widgetsLayout = new QHBoxLayout;
+    widgetsLayout->addWidget(monthWidget);
+
+    title = new QLabel("some text here");
+    title->setFont(QFont("Courier", 15));
+    title->setAlignment(Qt::AlignCenter);
+
+    mainLayout->addWidget(title);
+    mainLayout->addLayout(widgetsLayout);
+
+    setDate(date);
 }
 
 CalendarWidget::~CalendarWidget()
@@ -61,9 +74,8 @@ void CalendarWidget::dayPressed(QDate date)
 
 void CalendarWidget::setDate(QDate date)
 {
-    curYear = date.year();
-    curMonth = date.month();
-    curDay = date.day();
+    title->setText(date.toString("MMMM yyyy"));
+    update();
 }
 
 void CalendarWidget::setCalendar(Calendar *newCalendar)

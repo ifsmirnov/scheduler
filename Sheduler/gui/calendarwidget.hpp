@@ -2,6 +2,7 @@
 #define CALENDARWIDGET_HPP
 
 #include <QWidget>
+#include <QLabel>
 
 #include "src/calendar/calendar.hpp"
 #include "src/managers/schedulemanager.hpp"
@@ -27,10 +28,10 @@ public:
 
 private:
     Calendar *calendar;
-    int curYear, curMonth, curDay;
-
     DayWidget *dayWidget;
     MonthWidget *monthWidget;
+
+    QLabel *title;
     
 };
 
