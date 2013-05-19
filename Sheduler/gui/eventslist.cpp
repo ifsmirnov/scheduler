@@ -1,61 +1,76 @@
 #include <gui/eventslist.hpp>
 
-EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent) :
+
+ListWidget::ListWidget(QDate firstDay, QDate lastDay, ScheduleManager *manager, QWidget *parent) :
     QWidget(parent), manager(manager), firstDay(firstDay), lastDay(lastDay)
 {
-    QVector< QVector<Event*> > events;
+}
+
+
+void ListWidget::paintEvent(QPaintEvent *) {
+    int height = 0;
+    for (QDate day = firstDay; day <= lastDay; day = day.addDays(1))
+    {
+        QVector <Event*> events = manager->getEvents(day);
+        if (events.size()) {
+            height += 20 * (events.size() + 1);
+        }
+    }
+    resize(this->width(), height);
+
+    QPainter painter (this);
+    QRect textRect(rect().left(), rect().top(), rect().width() - 1, 19);
 
     for (QDate day = firstDay; day <= lastDay; day = day.addDays(1))
     {
-        events.push_back(manager->getEvents(day));
+        QVector <Event*> events = manager->getEvents(day);
+        if (events.size()) {
+            painter.setBrush(Qt::white);
+            painter.setPen(Qt::black);
+            painter.drawRect(textRect);
+            painter.drawText(textRect, "Date: " + day.toString());
+            textRect.setTop(textRect.top() + 20);
+            textRect.setHeight(19);
+            for (auto event: events) {
+                if (event->isRegular()) {
+                    painter.setBrush(QColor(Qt::blue).lighter());
+                } else {
+                    painter.setBrush(event->color());
+                }
+                painter.drawRect(textRect);
+                painter.drawText(textRect, Qt::AlignCenter, event->info() + " (" + event->begin().toString() + ")");
+                textRect.setTop(textRect.top() + 20);
+                textRect.setHeight(19);
+            }
+        }
     }
+}
 
-    setLayout(new QVBoxLayout(this));
+QSize ListWidget::sizeHint() const {
+    return QSize(height() - 50, width() - 250);
+}
+
+EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent) :
+    QWidget(parent), manager(manager), firstDay(firstDay), lastDay(lastDay)
+{
+
+
+    QVBoxLayout* eventListLayout = new QVBoxLayout();
 
     QLabel* dateLabel = new QLabel(firstDay.toString() + " - " + lastDay.toString());
-    layout()->addWidget(dateLabel);
+    eventListLayout->addWidget(dateLabel);
 
     QFrame* separator = new QFrame();
     separator->setFrameStyle(QFrame::HLine);
-    layout()->addWidget(separator);
+    eventListLayout->addWidget(separator);
 
     QScrollArea* scrollArea = new QScrollArea();
-    scrollArea->setLayout(new QVBoxLayout());
-    layout()->addWidget(scrollArea);
+    ListWidget* list = new ListWidget(firstDay, lastDay, manager);
+    //eventListLayout->addWidget(list);
 
-    QLayout* layout = scrollArea->layout();
-    QDate day = firstDay;
-    for (int dayIndex = 0; day <= lastDay; dayIndex++, day = day.addDays(1))
-    {
-        if (events[dayIndex].size() == 0) continue;
+    scrollArea->setWidget(list);
+    eventListLayout->addWidget(scrollArea);
 
-        if (dayIndex > 0)
-        {
-            QFrame* separator = new QFrame();
-            separator->setFrameStyle(QFrame::HLine);
-            layout->addWidget(separator);
-        }
 
-        QLabel* dateLabel = new QLabel("Date: " + day.toString());
-        dateLabel->setAlignment(Qt::AlignCenter);
-        QSizePolicy policy = dateLabel->sizePolicy();
-        policy.setHorizontalStretch(1);
-        dateLabel->setSizePolicy(policy);
-        layout->addWidget(dateLabel);
-
-        QFrame* separator = new QFrame();
-        separator->setFrameStyle(QFrame::HLine);
-        layout->addWidget(separator);
-
-        for (int eventIndex = 0; eventIndex < events[dayIndex].size(); ++eventIndex)
-        {
-            Event* event = events[dayIndex][eventIndex];
-            QLabel* eventLabel = new QLabel(event->info() + " (" + event->begin().toString() + ")");
-            eventLabel->setAlignment(Qt::AlignCenter);
-            QSizePolicy policy = eventLabel->sizePolicy();
-            policy.setVerticalStretch(1);
-            eventLabel->setSizePolicy(policy);
-            layout->addWidget(eventLabel);
-        }
-    }
+    setLayout(eventListLayout);
 }
