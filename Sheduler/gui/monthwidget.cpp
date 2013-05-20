@@ -232,6 +232,7 @@ void MonthWidget::nextMonth()
     curYear = date.year();
     curMonth = date.month();
     curDay = -1;
+    emit monthChanged();
 }
 
 void MonthWidget::prevMonth()
@@ -242,4 +243,5 @@ void MonthWidget::prevMonth()
     curYear = date.year();
     curMonth = date.month();
     curDay = -1;
+    emit monthChanged();
 }

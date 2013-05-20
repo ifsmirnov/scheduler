@@ -24,11 +24,12 @@ public:
 signals:
     
 public slots:
-    void closeEvent(QCloseEvent *);
+    void hideEvent(QHideEvent *);
     void dayPressed(QDate date);
     void setDate(QDate date);
     void displayWeek();
     void closeWeek();
+    void closeDay();
 
 public:
     void setCalendar(Calendar *newCalendar);
