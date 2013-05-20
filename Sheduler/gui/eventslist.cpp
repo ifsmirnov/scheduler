@@ -56,7 +56,7 @@ EventsList::EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, 
 
     QVBoxLayout* eventListLayout = new QVBoxLayout();
 
-    QLabel* dateLabel = new QLabel(firstDay.toString() + " - " + lastDay.toString());
+    dateLabel = new QLabel(firstDay.toString() + " - " + lastDay.toString());
     eventListLayout->addWidget(dateLabel);
 
     QFrame* separator = new QFrame();
@@ -96,4 +96,6 @@ void EventsList::setRange(QDate firstDay_, QDate lastDay_)
 {
     firstDay = firstDay_;
     lastDay = lastDay_;
+    list->setRange(firstDay_, lastDay_);
+    dateLabel->setText(firstDay.toString() + " - " + lastDay.toString());
 }

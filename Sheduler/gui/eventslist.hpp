@@ -48,6 +48,7 @@ private:
     QDate lastDay;
 
     ListWidget *list;
+    QLabel *dateLabel;
 
 public:
     EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent = 0);

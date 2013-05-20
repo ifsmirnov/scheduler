@@ -102,6 +102,9 @@ void CalendarWidget::setDate(QDate date)
 {
     date_ = date;
     title->setText(date.toString("MMMM yyyy"));
+    QDate firstDay = QDate(date.year(), date.month(), 1);
+    QDate lastDay = date.addMonths(1).addDays(-1);
+    eventList->setRange(firstDay, lastDay);
     update();
 }
 
