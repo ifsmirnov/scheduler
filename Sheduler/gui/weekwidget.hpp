@@ -23,16 +23,16 @@ protected:
 private:
     ScheduleManager* manager;
     QDate day;
-    QWidget* parentWW;
+    QWidget* parentWeekWidget;
 
 public:
     DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent = 0);
-
-    void setParentWW(QWidget*);
+    void setParentWeekWidget(QWidget*);
 
 signals:
 
 public slots:
+    void updateDayOfWeek();
     void paintEvent(QPaintEvent*);
     QSize sizeHint() const;
 
