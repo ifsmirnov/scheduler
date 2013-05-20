@@ -27,7 +27,7 @@ void ListWidget::paintEvent(QPaintEvent *) {
             painter.setBrush(Qt::white);
             painter.setPen(Qt::black);
             painter.drawRect(textRect);
-            painter.drawText(textRect, "Date: " + day.toString());
+            painter.drawText(textRect, "  Date: " + day.toString());
             textRect.setTop(textRect.top() + 20);
             textRect.setHeight(19);
             for (auto event: events) {
