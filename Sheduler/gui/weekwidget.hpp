@@ -7,6 +7,7 @@
 #include <QDate>
 #include <QTime>
 #include <QPainter>
+#include <QScrollArea>
 #include <QGridLayout>
 #include <iostream>
 #include <src/dailyschedule.hpp>

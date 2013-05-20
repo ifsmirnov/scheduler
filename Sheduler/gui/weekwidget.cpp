@@ -9,14 +9,8 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
     layout = new QHBoxLayout(this);
     for (int dayNumber = 0; dayNumber < 7; ++dayNumber, day = day.addDays(1))
     {
-        QFrame* dayFrame;
-        QVBoxLayout* frameLayout;
-        QLabel* dateLabel;
-        QFrame* separator;
-        DayOfWeek* dayOfWeekFrame;
-        QSizePolicy policy;
 
-        dayFrame = new QFrame();
+        QFrame* dayFrame = new QFrame();
         dayFrame->setFrameStyle(QFrame::Box);
         if (day.dayOfWeek() >= 6)
         {
@@ -25,34 +19,41 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
         else
         {
             dayFrame->setStyleSheet("QFrame { background-color: #efd334; padding: 1; }");
+            //dayFrame->layout()->addWidget(dayFrame);
         }
         dayFrame->setMinimumWidth(150);
         dayFrames.push_back(dayFrame);
 
-        frameLayout = new QVBoxLayout(dayFrame);
+        QVBoxLayout* frameLayout = new QVBoxLayout();
 
-        dateLabel = new QLabel(day.toString());
+        QLabel* dateLabel = new QLabel(day.toString());
         dateLabel->setAlignment(Qt::AlignHCenter);
 
-        policy = dateLabel->sizePolicy();
+        /*QSizePolicy policy = dateLabel->sizePolicy();
         policy.setVerticalStretch(0);
-        dateLabel->setSizePolicy(policy);
+        dateLabel->setSizePolicy(policy);*/
 
-        separator = new QFrame();
-        separator->setFrameStyle(QFrame::HLine);
+        //separator = new QFrame();
+        //separator->setFrameStyle(QFrame::HLine);
 
-        dayOfWeekFrame = new DayOfWeek(day, manager);
-        policy = dayOfWeekFrame->sizePolicy();
-        policy.setVerticalStretch(1);
-        policy.setHorizontalStretch(1);
-        dayOfWeekFrame->setSizePolicy(policy);
+        DayOfWeek* dayOfWeekFrame = new DayOfWeek(day, manager);
+        //policy = dayOfWeekFrame->sizePolicy();
+        //dayFrame->layout()->addWidget(dayFrame);
+        //policy.setVerticalStretch(1);
+        //policy.setHorizontalStretch(1);
+        //dayOfWeekFrame->setSizePolicy(policy);
         dayOfWeekFrame->setParentWW(this);
         dayOfWeekFrames.push_back(dayOfWeekFrame);
 
-        frameLayout->addWidget(dateLabel);
-        frameLayout->addWidget(separator);
-        frameLayout->addWidget(dayOfWeekFrame);
+        QScrollArea* dayOfWeekArea = new QScrollArea();
+        dayOfWeekArea->setWidget(dayOfWeekFrame);
+        dayOfWeekArea->resize(dayOfWeekFrame->size());
 
+        frameLayout->addWidget(dateLabel);
+        //frameLayout->addWidget(separator);
+        frameLayout->addWidget(dayOfWeekArea);
+
+        dayFrame->setLayout(frameLayout);
         layout->addWidget(dayFrame);
     }
 
@@ -90,7 +91,7 @@ void WeekWidget::callAddEventDialog(int dayOfWeek)
 DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
     QFrame(parent), manager(manager), day(day)
 {
-    setStyleSheet("QFrame { background-color: #ffffff; padding: 1; margin: 1; }");
+    /*setStyleSheet("QFrame { background-color: #ffffff; padding: 1; margin: 1; }");
     setFrameStyle(QFrame::Plain);
 
     setLayout(new QVBoxLayout(this));
@@ -126,6 +127,39 @@ DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
                 layout()->addWidget(separator);
             }
         }
+    }*/
+
+}
+
+void DayOfWeek::paintEvent(QPaintEvent *) {
+    QPainter painter(this);
+    int height;
+    QRect eventRect;
+    QVector<Event*> events = manager->getEvents(day);
+    if (events.size() == 0) {
+        height = 50;
+        resize(width(), height);
+        painter.setPen(Qt::black);
+        painter.setBrush(Qt::white);
+        eventRect = QRect(0, 0, width() - 1, 49);
+        painter.drawRect(eventRect);
+        painter.drawText(eventRect, "No events");
+    } else {
+        height = 50 * events.size();
+        resize(width(), height);
+        painter.setPen(Qt::black);
+        eventRect = QRect(0, 0, width() - 1, 49);
+        for (auto event: events) {
+            if (event->isRegular()) {
+                painter.setBrush(QColor(Qt::blue).lighter());
+            } else {
+                painter.setBrush(event->color());
+            }
+            painter.drawRect(eventRect);
+            painter.drawText(eventRect, event->info() + " (" + event->begin().toString() + ")");
+            eventRect.setTop(eventRect.top() + 50);
+            eventRect.setHeight(49);
+        }
     }
 }
 
@@ -139,12 +173,8 @@ void DayOfWeek::mousePressEvent(QMouseEvent* )
     parent->callAddEventDialog(day.dayOfWeek() - 1);
 }
 
-void DayOfWeek::paintEvent(QPaintEvent* )
-{
-}
-
 QSize DayOfWeek::sizeHint() const
 {
-    return QWidget::sizeHint();
-    //return QSize(100, 240);
+    //return QWidget::sizeHint();
+    return QSize(100, 240);
 }
