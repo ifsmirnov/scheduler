@@ -102,6 +102,8 @@ void CalendarWidget::displayWeek()
         weekWidget = new WeekWidget(date_, calendar->getManager());
         connect(weekWidget, SIGNAL(closed()),
                 this, SLOT(closeWeek()));
+        connect(weekWidget, SIGNAL(addWeeklyWidget(int,Event*)),
+                calendar, SLOT(addWeeklyEvent(int,Event*)));
         weekWidget->show();
     }
 }
