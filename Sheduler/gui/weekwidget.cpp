@@ -46,6 +46,7 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
         policy.setVerticalStretch(1);
         policy.setHorizontalStretch(1);
         dayOfWeekFrame->setSizePolicy(policy);
+        dayOfWeekFrame->setParentWW(this);
         dayOfWeekFrames.push_back(dayOfWeekFrame);
 
         frameLayout->addWidget(dateLabel);
@@ -82,7 +83,7 @@ void WeekWidget::closeEvent(QCloseEvent *event)
 void WeekWidget::callAddEventDialog(int dayOfWeek)
 {
     AddEventDialog* addEventDialog = new AddEventDialog(QDate(), dayOfWeek, this);
-    connect(addEventDialog, SIGNAL(addWeeklyWidget(int, event*)), this, SIGNAL(addWeeklyWidget(int, event*)));
+    connect(addEventDialog, SIGNAL(addWeeklyEvent(int, Event*)), this, SIGNAL(addWeeklyWidget(int,Event*)));
     addEventDialog->show();
 }
 
@@ -128,9 +129,13 @@ DayOfWeek::DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent) :
     }
 }
 
+void DayOfWeek::setParentWW(QWidget* parentWidget) {
+    parentWW = parentWidget;
+}
+
 void DayOfWeek::mousePressEvent(QMouseEvent* )
 {
-    WeekWidget* parent = (WeekWidget*)this->parent();
+    WeekWidget* parent = dynamic_cast<WeekWidget*>(parentWW);
     parent->callAddEventDialog(day.dayOfWeek() - 1);
 }
 

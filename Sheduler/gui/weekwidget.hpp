@@ -23,9 +23,12 @@ protected:
 private:
     ScheduleManager* manager;
     QDate day;
+    QWidget* parentWW;
 
 public:
     DayOfWeek(QDate day, ScheduleManager* manager, QWidget* parent = 0);
+
+    void setParentWW(QWidget*);
 
 signals:
 
