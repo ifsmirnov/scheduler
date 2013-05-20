@@ -22,6 +22,8 @@ CalendarWidget::CalendarWidget(QDate date, Calendar *calendar, QWidget *parent) 
             this, SLOT(dayPressed(QDate)));
     connect(monthWidget, SIGNAL(monthChanged(QDate)),
             this, SLOT(setDate(QDate)));
+    connect(monthWidget, SIGNAL(monthChanged()),
+            this, SLOT(closeDay()));
 
     // week button
     QPushButton *weekButton = new QPushButton("week");
@@ -57,12 +59,19 @@ CalendarWidget::~CalendarWidget()
     std::cerr << "Calendar widget removed" << std::endl;
 }
 
-void CalendarWidget::closeEvent(QCloseEvent *)
+void CalendarWidget::hideEvent(QHideEvent *event)
 {
     if (dayWidget) {
         dayWidget->close();
         delete dayWidget;
+        dayWidget = nullptr;
     }
+    if (weekWidget) {
+        weekWidget->close();
+        delete weekWidget;
+        weekWidget = nullptr;
+    }
+    QWidget::hideEvent(event);
 }
 
 void CalendarWidget::dayPressed(QDate date)
@@ -114,6 +123,15 @@ void CalendarWidget::closeWeek()
         weekWidget->close();
         delete weekWidget;
         weekWidget = nullptr;
+    }
+}
+
+void CalendarWidget::closeDay()
+{
+    if (dayWidget != nullptr) {
+        dayWidget->close();
+        delete dayWidget;
+        dayWidget = nullptr;
     }
 }
 

@@ -67,6 +67,7 @@ public:
 signals:
     void dayPressedSignal(QDate date);
     void monthChanged(QDate date);
+    void monthChanged();
 
 private:
     void setMonth(QDate date);
