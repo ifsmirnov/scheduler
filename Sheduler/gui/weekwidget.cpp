@@ -59,21 +59,6 @@ WeekWidget::WeekWidget(QDate firstDay, ScheduleManager* manager, QWidget* parent
     setMinimumSize(400, 300);
 }
 
-void WeekWidget::paintEvent(QPaintEvent*)
-{
-    for (auto frame : dayFrames)
-    {
-        if (frame->underMouse())
-        {
-            frame->setFrameShadow(QFrame::Plain);
-        }
-        else
-        {
-            frame->setFrameShadow(QFrame::Raised);
-        }
-    }
-}
-
 void WeekWidget::closeEvent(QCloseEvent *event)
 {
     emit closed();

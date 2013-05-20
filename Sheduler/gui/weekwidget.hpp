@@ -60,7 +60,6 @@ signals:
     void closed();
     
 public slots:
-    void paintEvent(QPaintEvent*);
     void closeEvent(QCloseEvent *);
     
 };
