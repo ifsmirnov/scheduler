@@ -30,6 +30,7 @@ public:
     ListWidget(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent = 0);
 
     void setManager(ScheduleManager *value);
+    void setRange(QDate firstDay_, QDate lastDay_);
 
 public slots:
     void paintEvent(QPaintEvent *);
@@ -52,6 +53,7 @@ public:
     EventsList(QDate firstDay, QDate lastDay, ScheduleManager* manager, QWidget* parent = 0);
 
     void setManager(ScheduleManager *value);
+    void setRange(QDate firstDay_, QDate lastDay_);
 
 signals:
 

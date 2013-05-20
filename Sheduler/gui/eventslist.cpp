@@ -79,8 +79,21 @@ void ListWidget::setManager(ScheduleManager *value)
     manager = value;
 }
 
+void ListWidget::setRange(QDate firstDay_, QDate lastDay_)
+{
+    firstDay = firstDay_;
+    lastDay = lastDay_;
+}
+
+
 void EventsList::setManager(ScheduleManager *value)
 {
     manager = value;
     list->setManager(value);
+}
+
+void EventsList::setRange(QDate firstDay_, QDate lastDay_)
+{
+    firstDay = firstDay_;
+    lastDay = lastDay_;
 }
